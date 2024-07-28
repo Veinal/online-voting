@@ -2,22 +2,26 @@ const mongoose=require('mongoose')
 const {Schema}=mongoose;
 
 const CandiSchema=new Schema({
-    candName:{
-        type:String,
-        required:true
-    },
+    // user_id:{
+    // },
+    // election_id:{
+    // },
     partyName:{
         type:String,
         required:true
     },
-    age:{
-        type:Number
-    },
     symbol:{
         type:String
     },
-    partySign:{
+    voteCount:{
+        type:Number
+    },
+    date:{
+        type:Date,
+        default:Date.now()
+    },
+    status:{
         type:String
     }
 })
-module.exports=mongoose.model("CandiSchema")
+module.exports=mongoose.model("Candidates")
