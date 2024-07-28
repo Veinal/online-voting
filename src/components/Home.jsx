@@ -4,40 +4,9 @@ export default function Home() {
   return (
     <div>
         <div className="flex flex-col min-h-[100dvh]">
-        <header className="px-4 lg:px-6 h-14 flex items-center">
-            <a className="flex items-center justify-center" href="#" rel="ugc">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="h-6 w-6"
-            >
-                <path d="m9 12 2 2 4-4"></path>
-                <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
-                <path d="M22 19H2"></path>
-            </svg>
-            <span className="sr-only">Secure Voting</span>
-            </a>
-            <nav className="ml-auto flex gap-4 sm:gap-6">
-            <a className="text-sm font-medium hover:underline underline-offset-4" href="#" rel="ugc">
-                Features
-            </a>
-            <a className="text-sm font-medium hover:underline underline-offset-4" href="#" rel="ugc">
-                Testimonials
-            </a>
-            <a className="text-sm font-medium hover:underline underline-offset-4" href="#" rel="ugc">
-                FAQ
-            </a>
-            </nav>
-        </header>
+        
         <main className="flex-1">
-            <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+            <section className="w-full py-12 md:py-20 lg:py-28 xl:py-32">
             <div className="container px-4 md:px-6">
                 <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                 <div className="flex flex-col justify-center space-y-4">
@@ -228,7 +197,7 @@ export default function Home() {
                         aria-labelledby="radix-:r8:"
                         data-orientation="vertical"
                         className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
                         ></div>
                     </div>
                     </div>
@@ -270,7 +239,7 @@ export default function Home() {
                         aria-labelledby="radix-:ra:"
                         data-orientation="vertical"
                         className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
                         ></div>
                     </div>
                     </div>
@@ -314,7 +283,7 @@ export default function Home() {
                         aria-labelledby="radix-:rc:"
                         data-orientation="vertical"
                         className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
                         ></div>
                     </div>
                     </div>
@@ -356,7 +325,7 @@ export default function Home() {
                         aria-labelledby="radix-:re:"
                         data-orientation="vertical"
                         className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
                         ></div>
                     </div>
                     </div>

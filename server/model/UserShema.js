@@ -17,6 +17,23 @@ const UserSchema=new Schema({
     phone:{
         type:Number,
         required:true
+    },
+    age:{
+        type:Number,
+        required:true
+    },
+    picture:{
+        type:String,
+    },
+    role:{
+        type:String
+    },
+    date:{
+        type:Date,
+        default:Date.now()
+    },
+    status:{
+        type:String
     }
 })
 

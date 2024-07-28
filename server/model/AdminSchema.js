@@ -13,6 +13,13 @@ const AdminSchema=new Schema({
     adminPassword:{
         type:String,
         required:true
-    }  
+    },
+    date:{
+        type:Date,
+        default:Date.now()
+    },
+    status:{
+        type:String
+    }
 })
-module.exports=mongoose.model("AdminSchema")
+module.exports=mongoose.model("AdminDetails")
