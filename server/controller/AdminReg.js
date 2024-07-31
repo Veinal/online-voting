@@ -1,6 +1,7 @@
 const AdminSchema = require('../model/AdminSchema')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const JWT_SECRET="admin"
 
 const Register = async (req, res) => {
     try {
@@ -76,7 +77,9 @@ const Delete=async(req,res)=>{
             return res.status(404).send("Data does not exist with this Id")
         }
         else{
-            sd
+            data =await AdminSchema.findByIdAndDelete(req.params.id)
+            console.log("Data Deleted successfully")
+            res.json({"success":true,"Deleted data":data})
         }
     }
     catch(err){
