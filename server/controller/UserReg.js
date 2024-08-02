@@ -41,7 +41,7 @@ const Login=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await UserSchema.findById(req.params.id);
+        const data=await UserSchema.find();
         console.log(data,"user login view")
         res.json(data)
     }
