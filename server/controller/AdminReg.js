@@ -87,3 +87,30 @@ const Delete=async(req,res)=>{
         res.status(500).json("some internal error!!!")
     }
 }
+
+const Update=async(req,res)=>{
+    const {adminName, adminEmail, adminPassword, date, status}=req.body;
+    try{
+        const newData={}
+        if(adminName){newData.adminName=adminName}
+        if(adminEmail){newData.adminEmail=adminEmail}
+        if(adminPassword){newData.adminPassword=adminPassword}
+        if(date){newData.date=date}
+        if(status){newData.status=status}
+
+        let data=await AdminSchema.findById(req.params.id)
+        if(!data){
+            console.log("Data not found with this id")
+            return res.status(404).send("Data does not exist with this ID")
+        }else{
+            data=await AdminSchema.findByIdAndUpdate(req.params.id,{$set:newData})
+            res.json({data})
+        }
+    }
+    catch(err){
+        console.error("some error occurred"+err)
+        res.status(500).json("some internal error")
+    }
+}
+
+module.exports={Register,Login,View,SingleView,Delete,Update}

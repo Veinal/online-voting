@@ -5,10 +5,10 @@ const JWT_SECRET="user"
 
 const Register = async(req,res)=>{
     try{
-        const {userName,email,password,phone,age,role}=req.body;
+        const {userName,email,password,phone,age,role,date,status}=req.body;
         // picture
 
-        const data = await new UserSchema({userName,email,password,phone,age,role})
+        const data = await new UserSchema({userName,email,password,phone,age,role,date,status})
         const savedData=data.save()
         console.log("User Registration successful")
         res.send({"Registration successful":true,savedData})
@@ -87,3 +87,32 @@ const Delete =async(req,res)=>{
         res.status(500).json("some internal error")
     }
 }
+
+const Update=async(req,res)=>{
+    const {userName,email,password,phone,age,role,date,status}=req.body
+    try{
+        const newData={}
+        if(userName){newData.userName=userName}
+        if(email){newData.email=email}
+        if(password){newData.password=password}
+        if(phone){newData.phone=phone}
+        if(age){newData.age=age}
+        if(role){newData.role=role}
+        if(date){newData.date=date}
+        if(status){newData.status=status}
+
+        let data=await UserSchema.findById(req.params.id)
+        if(!data){
+            console.log("Data not found with this Id")
+            return res.status(404).send("Data doesn't exist with this Id")
+        }else{
+            data=await UserSchema.findByIdAndUpdate(req.params.id,{$set:newData})
+            res.json({data})
+        }
+    }
+    catch(err){
+        console.error("some error occurred")
+        res.status(500).json("some internal error")
+    }
+}
+module.exports={Register,Login,View,SingleView,Delete,Update}

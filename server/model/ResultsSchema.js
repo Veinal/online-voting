@@ -9,7 +9,7 @@ const ResultSchema=new Schema({
     },
     date:{
         type:Date,
-        default:true
+        default:Date.now()
     },
     status:{
         type:String

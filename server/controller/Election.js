@@ -2,8 +2,8 @@ const ElectionSchema=require('../model/ElectionSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {partyName,symbol,voteCount,date,status}=req.body;
-        const data=await new ElectionSchema({partyName,symbol,voteCount,date})
+        const {electionName,description,startDate,endDate,date,status}=req.body;
+        const data=await new ElectionSchema({electionName,description,startDate,endDate,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -61,4 +61,30 @@ const Delete=async(req,res)=>{
     }
 }
 
-module.exports={Insert,View,SingleView,Delete}
+const Update=async(req,res)=>{
+    const {electionName,description,startDate,endDate,date,status}=req.body
+    try{
+        const newData={}
+        if(electionName){newData.electionName=electionName}
+        if(description){newData.description=description}
+        if(startDate){newData.startDate=startDate}
+        if(endDate){newData.endDate=endDate}
+        if(date){newData.date=date}
+        if(status){newData.status=status}
+
+        let data=await ElectionSchema.findById(req.params.id)
+        if(!data){
+            console.log("Data not found with this Id")
+            return res.status(404).send("Data doesn't exist with this Id")
+        }else{
+            data=await ElectionSchema.findByIdAndUpdate(req.params.id,{$set:newData})
+            res.json({data})
+        }
+    }
+    catch(err){
+        console.error("some error occurred")
+        res.status(500).json("some internal error")
+    }
+}
+
+module.exports={Insert,View,SingleView,Delete,Update}

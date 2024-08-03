@@ -6,5 +6,12 @@ const FeedbackSchema=new Schema({
     feedback:{
         type:String
     },
+    date:{
+        type:Date,
+        default:Date.now()
+    },
+    status:{
+        type:String
+    }
 })
 module.exports=mongoose.model("Feedbacks")
