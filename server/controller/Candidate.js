@@ -3,7 +3,7 @@ const CandiSchema=require('../model/CandiSchema');
 const Insert=async(req,res)=>{
     try{
         const {partyName,symbol,voteCount,date,status}=req.body;
-        const data=await new CandiSchema({partyName,symbol,voteCount,date})
+        const data=await new CandiSchema({partyName,symbol,voteCount,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -61,4 +61,29 @@ const Delete=async(req,res)=>{
     }
 }
 
-module.exports={Insert,View,SingleView,Delete}
+const Update=async(req,res)=>{
+    const {partyName,symbol,voteCount,date,status}=req.body
+    try{
+        const newData={}
+        if(partyName){newData.partyName=partyName}
+        if(symbol){newData.symbol=symbol}
+        if(voteCount){newData.voteCount=voteCount}
+        if(date){newData.date=date}
+        if(status){newData.status=status}
+
+        let data=await CandiSchema.findById(req.params.id)
+        if(!data){
+            console.log("Data not found with this Id")
+            return res.status(404).send("Data doesn't exist with this Id")
+        }else{
+            data=await CandiSchema.findByIdAndUpdate(req.params.id,{$set:newData})
+            res.json({data})
+        }
+    }
+    catch(err){
+        console.error("some error occurred")
+        res.status(500).json("some internal error")
+    }
+}
+
+module.exports={Insert,View,SingleView,Delete,Update}
