@@ -1,4 +1,6 @@
 import React from 'react'
+import VotingImg from '../votingImg.svg'
+import Footer from './Footer'
 
 export default function Home() {
   return (
@@ -7,7 +9,7 @@ export default function Home() {
         
         <main className="flex-1">
             <section className="w-full py-12 md:py-20 lg:py-28 xl:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                 <div className="flex flex-col justify-center space-y-4">
                     <div className="space-y-2">
@@ -30,7 +32,7 @@ export default function Home() {
                     </div>
                 </div>
                 <img
-                    src="/placeholder.svg"
+                    src={VotingImg}
                     width="550"
                     height="310"
                     alt="Hero"
@@ -40,7 +42,7 @@ export default function Home() {
             </div>
             </section>
             <section className="w-full py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
@@ -92,7 +94,7 @@ export default function Home() {
             </div>
             </section>
             <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-            <div className="container px-4 md:px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Testimonials</div>
@@ -147,7 +149,7 @@ export default function Home() {
             </div>
             </section>
             <section className="w-full py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                     <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">FAQ</div>
@@ -334,17 +336,9 @@ export default function Home() {
             </div>
             </section>
         </main>
-        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-            <p className="text-xs text-muted-foreground">© 2024 Secure Voting. All rights reserved.</p>
-            <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-            <a className="text-xs hover:underline underline-offset-4" href="#" rel="ugc">
-                Terms of Service
-            </a>
-            <a className="text-xs hover:underline underline-offset-4" href="#" rel="ugc">
-                Privacy Policy
-            </a>
-            </nav>
-        </footer>
+
+        <Footer/>
+
         </div>
     </div>
   )
