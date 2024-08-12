@@ -5,7 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
+import {Link, useNavigate} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,6 +14,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import signInImg from '../signInImg.jpg'
+import { useState } from 'react';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -32,13 +35,26 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const [signInState,setSignInState]=useState()
+  const navigate=useNavigate()
+
+  const handleChange=(e)=>{
+    setSignInState({...signInState,[e.target.name]:e.target.value})
+  }
+  console.log(signInState,'signInState')
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    axios.post('/http://localhost:7000/api/',signInState)
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
+    // await
   };
 
   return (
@@ -84,6 +100,7 @@ export default function SignIn() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e)=>handleChange(e)}
                 autoFocus
               />
               <TextField
@@ -95,11 +112,12 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e)=>handleChange(e)}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -110,12 +128,12 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="#" className='text-blue-700' variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to='/signup' className='text-blue-700' variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
