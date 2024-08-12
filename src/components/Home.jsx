@@ -1,6 +1,7 @@
 import React from 'react'
 import VotingImg from '../votingImg.svg'
 import Footer from './Footer'
+import {Link} from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -22,13 +23,15 @@ export default function Home() {
                     </p>
                     </div>
                     <div>
-                    <a
-                        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                        href="#"
-                        rel="ugc"
-                    >
-                        Sign Up
-                    </a>
+                    <Link to='/signin'>
+                        <a
+                            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                            href="#"
+                            rel="ugc"
+                        >
+                            Sign Up
+                        </a>
+                    </Link>
                     </div>
                 </div>
                 <img

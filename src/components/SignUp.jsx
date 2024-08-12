@@ -5,7 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
+import { Link, useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,6 +14,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import signUpImg from '../signUpImg.jpg'
+import { useState } from 'react';
+import Axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -32,13 +35,25 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Sign() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const [signUpState,setSignState]=useState();
+  const navigate=useNavigate()
+  
+  const HandleChange=(e)=>{
+    setSignState({...signUpState,[e.target.name]:e.target.value})
+  }
+  console.log(signUpState,'signState')
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    
+    Axios.post('/http://localhost:7000/api/',signUpState)
+    .then((res)=>{
+      console.log(res.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+
+    await navigate('/signin')
   };
 
   return (
@@ -62,7 +77,7 @@ export default function Sign() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 6,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -80,11 +95,22 @@ export default function Sign() {
                 margin="normal"
                 required
                 fullWidth
+                id="userName"
+                label="Full Name"
+                name="userName"
+                autoComplete="name"
+                onChange={(e)=>HandleChange(e)}
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="email"
-                label="Email Address"
+                label="Email address"
                 name="email"
                 autoComplete="email"
-                autoFocus
+                onChange={(e)=>HandleChange(e)}
               />
               <TextField
                 margin="normal"
@@ -95,32 +121,76 @@ export default function Sign() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e)=>HandleChange(e)}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="phone"
+                label="Phone Number"
+                name="phone"
+                autoComplete="phone"
+                onChange={(e)=>HandleChange(e)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type='number'
+                id="age"
+                label="Age"
+                name="age"
+                autoComplete="age"
+                onChange={(e)=>HandleChange(e)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type='file'
+                id="picture"
+                label="Picture"
+                name="picture"
+                autoComplete="picture"
+                onChange={(e)=>HandleChange(e)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="role"
+                label="Role"
+                name="role"
+                autoComplete="role"
+                onChange={(e)=>HandleChange(e)}
+              />
+              {/* <FormControlLabel
+                control={<Checkbox onChange="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={handleSubmit}
               >
                 Sign In
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="#" className='text-blue-700' variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link to='/signin' className='text-blue-700' variant="body2">
+                    {"Already have an account? Sign In"}
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              {/* <Copyright sx={{ mt: 5 }} /> */}
             </Box>
           </Box>
         </Grid>
