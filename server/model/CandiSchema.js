@@ -24,4 +24,4 @@ const CandiSchema=new Schema({
         type:String
     }
 })
-module.exports=mongoose.model("Candidates")
+module.exports=mongoose.model("Candidates",CandiSchema)

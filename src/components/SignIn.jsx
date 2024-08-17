@@ -46,7 +46,7 @@ export default function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    axios.post('/http://localhost:7000/api/',signInState)
+    axios.post('http://localhost:7000/api/userreg/login',signInState)
     .then((res)=>{
       console.log(res.data)
     })

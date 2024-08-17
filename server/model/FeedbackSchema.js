@@ -14,4 +14,4 @@ const FeedbackSchema=new Schema({
         type:String
     }
 })
-module.exports=mongoose.model("Feedbacks")
+module.exports=mongoose.model("Feedbacks",FeedbackSchema)

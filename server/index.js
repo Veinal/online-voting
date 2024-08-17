@@ -1,10 +1,10 @@
 const express=require('express');
 const connectToMongo=require('./database');
-// const cors=require('cors')
+const cors=require('cors')
 const app=express();
 
 app.use(express.json());
-// app.use(cors())
+app.use(cors())
 
 app.use('/api/adminreg',require('./router/AdminRouter'))
 app.use('/api/candidate',require('./router/CandiRouter'))

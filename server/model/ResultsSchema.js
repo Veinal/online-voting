@@ -15,4 +15,4 @@ const ResultSchema=new Schema({
         type:String
     }
 })
-module.exports=mongoose.model("Results")
+module.exports=mongoose.model("Results",ResultSchema)
