@@ -22,4 +22,4 @@ const AdminSchema=new Schema({
         type:String
     }
 })
-module.exports=mongoose.model("AdminDetails")
+module.exports=mongoose.model("AdminDetails",AdminSchema)

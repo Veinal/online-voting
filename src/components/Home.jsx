@@ -87,7 +87,7 @@ export default function Home() {
                     </ul>
                 </div>
                 <img
-                    src="/placeholder.svg"
+                    src={VotingImg}
                     width="550"
                     height="310"
                     alt="Features"

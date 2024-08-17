@@ -46,14 +46,15 @@ export default function Sign() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     
-    Axios.post('/http://localhost:7000/api/',signUpState)
+    Axios.post('http://localhost:7000/api/userreg/register',signUpState)
     .then((res)=>{
       console.log(res.data)
+      navigate('/signin')
     }).catch((err)=>{
       console.log(err)
     })
 
-    await navigate('/signin')
+    
   };
 
   return (

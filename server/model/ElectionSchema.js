@@ -23,4 +23,4 @@ const ElectionSchema=new Schema({
         type:String
     }
 })
-module.exports=mongoose.model("Elections")
+module.exports=mongoose.model("Elections",ElectionSchema)

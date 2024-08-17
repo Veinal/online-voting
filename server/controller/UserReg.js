@@ -22,7 +22,7 @@ const Register = async(req,res)=>{
 const Login=async(req,res)=>{
     const {email,password}=req.body
     try{
-        const user =await new UserSchema.findOne({email})
+        const user =await UserSchema.findOne({email})
         console.log(user,"user")
         if(!user){
             return res.json({error:"Invalid user email address"})

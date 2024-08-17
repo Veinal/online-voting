@@ -4,6 +4,7 @@ import Home from './Home'
 import NavBar from './NavBar'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
+import Vote from './Vote'
 
 export default function Router() {
 
@@ -19,6 +20,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<WithNavBar><Home/></WithNavBar>}/>
+                <Route path='/vote' element={<WithNavBar><Vote/></WithNavBar>}/>
                 <Route path='/signin' element={<SignIn/>}/>
                 <Route path='/signup' element={<SignUp/>}/>
             </Routes>
