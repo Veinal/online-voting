@@ -1,5 +1,6 @@
 import React from 'react'
 import VotingImg from '../votingImg.svg'
+import phone_sec from '../phone_sec.jpg'
 import Footer from './Footer'
 import {Link} from 'react-router-dom'
 
@@ -87,7 +88,7 @@ export default function Home() {
                     </ul>
                 </div>
                 <img
-                    src={VotingImg}
+                    src={phone_sec}
                     width="550"
                     height="310"
                     alt="Features"
