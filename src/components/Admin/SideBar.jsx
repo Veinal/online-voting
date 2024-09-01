@@ -25,7 +25,7 @@ export default function SideBar() {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
                 <li>
-                    <Link to='/vote'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='/admindashboard'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <DashboardIcon/>
                     <span className="ms-3">Dashboard</span>
                     </Link>
@@ -38,7 +38,7 @@ export default function SideBar() {
                     </Link>
                 </li>
                 <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='/candidateDetails'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <HailIcon/>
                     <span className="flex-1 ms-3 whitespace-nowrap">Candidate</span>
                     {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> */}
@@ -46,7 +46,7 @@ export default function SideBar() {
                 </li>
                 <hr />
                 <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='/electionDetails'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <HowToVoteIcon/>
                     <span className="flex-1 ms-3 whitespace-nowrap">Elections</span>
                     {/* <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span> */}
@@ -55,13 +55,13 @@ export default function SideBar() {
                 
                 
                 <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='/resultDetails'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <EmojiEventsIcon/>
                     <span className="flex-1 ms-3 whitespace-nowrap">Results</span>
                     </Link>
                 </li>
                 <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='/feedbackDetails'  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <QuestionAnswerIcon/>
                     <span className="flex-1 ms-3 whitespace-nowrap">Feedback</span>
                     </Link>

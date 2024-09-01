@@ -11,6 +11,7 @@ import ElectionDetails from './Admin/ElectionDetails'
 import FeedbackDetails from './Admin/FeedbackDetails'
 import ResultDetails from './Admin/ResultDetails'
 import UserDetails from './Admin/UserDetails'
+import SideBar from './Admin/SideBar'
 
 export default function Router() {
 
@@ -20,6 +21,13 @@ export default function Router() {
       {children}
     </>
   );
+
+  const WithSideBar=({children})=>(
+    <>
+      <SideBar/>
+      {children}
+    </>
+  )
 
   return (
     <div>
@@ -31,12 +39,12 @@ export default function Router() {
                 <Route path='/signup' element={<SignUp/>}/>
 
                 {/* Admin Routes */}
-                <Route path='/admindashboard' element={<AdminDashboard/>}/>
-                <Route path='/candidateDetails' element={<CandidateDetails/>}/>
-                <Route path='/electionDetails' element={<ElectionDetails/>}/>
-                <Route path='/feedbackDetails' element={<FeedbackDetails/>}/>
-                <Route path='/resultDetails' element={<ResultDetails/>}/>
-                <Route path='/userDetails' element={<UserDetails/>}/>
+                <Route path='/admindashboard' element={<WithSideBar><AdminDashboard/></WithSideBar>}/>
+                <Route path='/candidateDetails' element={<WithSideBar><CandidateDetails/></WithSideBar>}/>
+                <Route path='/electionDetails' element={<WithSideBar><ElectionDetails/></WithSideBar>}/>
+                <Route path='/feedbackDetails' element={<WithSideBar><FeedbackDetails/></WithSideBar>}/>
+                <Route path='/resultDetails' element={<WithSideBar><ResultDetails/></WithSideBar>}/>
+                <Route path='/userDetails' element={<WithSideBar><UserDetails/></WithSideBar>}/>
             </Routes>
         </BrowserRouter>
     </div>
