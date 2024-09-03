@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function NavBar() {
   return (
@@ -26,10 +27,10 @@ export default function NavBar() {
             </div>
             <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-                <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Home</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Voting</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Contact Us</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About Us</a>
+                <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page"><Link to='/'>Home</Link></a>
+                <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/vote'>Voting</Link></a>
+                <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/contactus'>Contact Us</Link></a>
+                <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/aboutus'>About Us</Link></a>
             </div>
             </div>
         </div>
@@ -63,10 +64,10 @@ export default function NavBar() {
 
     <div class="sm:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pb-3 pt-2">
-        <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Home</a>
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Voting</a>
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Contact Us</a>
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About Us</a>
+        <a class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page"><Link to='/'>Home</Link></a>
+        <a class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/vote'>Voting</Link></a>
+        <a class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/contactus'>Contact Us</Link></a>
+        <a class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/aboutus'>About Us</Link></a>
         </div>
     </div>
     </nav>
