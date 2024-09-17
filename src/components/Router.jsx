@@ -12,6 +12,9 @@ import FeedbackDetails from './Admin/FeedbackDetails'
 import ResultDetails from './Admin/ResultDetails'
 import UserDetails from './Admin/UserDetails'
 import SideBar from './Admin/SideBar'
+import ContactUs from './ContactUs'
+import AboutUs from './AboutUs'
+import AdminLogin from './Admin/AdminLogin'
 
 export default function Router() {
 
@@ -35,8 +38,12 @@ export default function Router() {
             <Routes>
                 <Route path='/' element={<WithNavBar><Home/></WithNavBar>}/>
                 <Route path='/vote' element={<WithNavBar><Vote/></WithNavBar>}/>
+                <Route path='/contactus' element={<WithNavBar><ContactUs/></WithNavBar>}/>
+                <Route path='/aboutus' element={<WithNavBar><AboutUs/></WithNavBar>}/>
+
                 <Route path='/signin' element={<SignIn/>}/>
                 <Route path='/signup' element={<SignUp/>}/>
+                <Route path='/adminlogin' element={<AdminLogin/>}/>
 
                 {/* Admin Routes */}
                 <Route path='/admindashboard' element={<WithSideBar><AdminDashboard/></WithSideBar>}/>

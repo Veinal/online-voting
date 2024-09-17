@@ -1,7 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useLocation } from 'react-router-dom'
 
 export default function NavBar() {
+    const location =useLocation();
+    const path=location.pathname;
+
   return (
     <div>
         <nav class="bg-gray-800">
@@ -27,10 +30,44 @@ export default function NavBar() {
             </div>
             <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
-                <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page"><Link to='/'>Home</Link></a>
+                {/* <a class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page"><Link to='/'>Home</Link></a>
                 <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/vote'>Voting</Link></a>
                 <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/contactus'>Contact Us</Link></a>
-                <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/aboutus'>About Us</Link></a>
+                <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"><Link to='/aboutus'>About Us</Link></a> */}
+
+                <Link
+                    to="/"
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      path === '/' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    }`}
+                    aria-current={path === '/' ? 'page' : undefined}
+                >
+                Home
+                </Link>
+                <Link
+                to="/vote"
+                className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    path === '/vote' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+                >
+                Voting
+                </Link>
+                <Link
+                to="/contactus"
+                className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    path === '/contactus' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+                >
+                Contact Us
+                </Link>
+                <Link
+                to="/aboutus"
+                className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    path === '/aboutus' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+                >
+                About Us
+                </Link>
             </div>
             </div>
         </div>
