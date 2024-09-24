@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +7,22 @@ export default function AdminLogin() {
     const [login,setLogin]=useState();
     const navigate=useNavigate();
 
-    const HandleChange=()=>{
-        // setLogin({...login})
+    const HandleChange=(e)=>{
+        setLogin({...login,[e.target.name]:e.target.value})
     }
+    console.log(login,"adminLogin state")
 
-    const HandleSubmit=()=>{
+    const HandleSubmit=(e)=>{
+        e.preventDefault();
 
+        axios.post('http://localhost:7000/api/adminreg/login',login)
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            console.log(err)
+            navigate('/admindashboard')
+        })
     }
   return (
     <div>
@@ -28,11 +39,11 @@ export default function AdminLogin() {
                             <div className="mx-auto max-w-xs">
                                 <input
                                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                                    type="email" onChange={(e)=>HandleChange()} placeholder="Email" />
+                                    type="email" name='adminEmail' onChange={(e)=>HandleChange(e)} placeholder="Email" />
                                 <input
                                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                                    type="password" onChange={()=>HandleChange()} placeholder="Password" />
-                                <button onClick={HandleSubmit()}
+                                    type="password" name='adminPassword' onChange={(e)=>HandleChange(e)} placeholder="Password" />
+                                <button onClick={HandleSubmit}
                                     className="mt-10 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                                     {/* <svg className="w-6 h-6 -ml-2" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">

@@ -34,7 +34,7 @@ export default function AdminDashboard() {
           />
         </div>
         <div id="graph" className="mt-5">
-          {/* Graph content goes here */}
+          {/* <div className="border rounded"></div> */}
         </div>
       </div>
     </div>
