@@ -15,6 +15,7 @@ import SideBar from './Admin/SideBar'
 import ContactUs from './ContactUs'
 import AboutUs from './AboutUs'
 import AdminLogin from './Admin/AdminLogin'
+import AddUserDetails from './Admin/AddUserDetails'
 
 export default function Router() {
 
@@ -52,6 +53,8 @@ export default function Router() {
                 <Route path='/feedbackDetails' element={<WithSideBar><FeedbackDetails/></WithSideBar>}/>
                 <Route path='/resultDetails' element={<WithSideBar><ResultDetails/></WithSideBar>}/>
                 <Route path='/userDetails' element={<WithSideBar><UserDetails/></WithSideBar>}/>
+
+                <Route path='/adduserdetails' element={<WithSideBar><AddUserDetails/></WithSideBar>}/>
             </Routes>
         </BrowserRouter>
     </div>

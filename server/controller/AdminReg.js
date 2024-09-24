@@ -21,7 +21,7 @@ const Register = async (req, res) => {
 const Login = async(req,res)=>{
     const {adminEmail,adminPassword}=req.body;
     try{
-        let admin =await new AdminSchema.findOne({adminEmail})
+        let admin =await AdminSchema.findOne({adminEmail})
         console.log(admin,"admin")
         if(!admin){
             return res.json({error:"Invalid credential email"})
@@ -31,7 +31,7 @@ const Login = async(req,res)=>{
         const data=admin.id;
         console.log(admin.id)
         console.log("login success")
-        // res.json({"Login successful":true,data})
+        res.json({"Login successful":true,data})
     }
     catch(err){
         console.error("some error occured!!"+err)
