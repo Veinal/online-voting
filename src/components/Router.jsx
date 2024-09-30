@@ -15,7 +15,10 @@ import SideBar from './Admin/SideBar'
 import ContactUs from './ContactUs'
 import AboutUs from './AboutUs'
 import AdminLogin from './Admin/AdminLogin'
-import AddUserDetails from './Admin/AddUserDetails'
+import EditUserDetails from './Admin/EditUserDetails'
+import AddElection from './Admin/AddElection'
+import UserModal from './Admin/UserModal'
+
 
 export default function Router() {
 
@@ -54,7 +57,10 @@ export default function Router() {
                 <Route path='/resultDetails' element={<WithSideBar><ResultDetails/></WithSideBar>}/>
                 <Route path='/userDetails' element={<WithSideBar><UserDetails/></WithSideBar>}/>
 
-                <Route path='/adduserdetails' element={<WithSideBar><AddUserDetails/></WithSideBar>}/>
+                <Route path='/adduserdetails' element={<WithSideBar><EditUserDetails/></WithSideBar>}/>
+                <Route path='/addelection' element={<WithSideBar><AddElection/></WithSideBar>}/>
+
+                <Route path='/usermodal' element={<UserModal/>} />
             </Routes>
         </BrowserRouter>
     </div>
