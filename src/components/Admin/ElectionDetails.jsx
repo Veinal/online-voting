@@ -1,5 +1,9 @@
 import React from 'react'
 import SideBar from './SideBar'
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function ElectionDetails() {
   return (
@@ -110,7 +114,15 @@ export default function ElectionDetails() {
                           $2999
                       </td>
                       <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <IconButton aria-label="edit" color='inherit'>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="view" color='inherit'>
+                                <VisibilityIcon />
+                            </IconButton>
+                            <IconButton aria-label="delete" color='inherit'>
+                                <DeleteIcon />
+                            </IconButton>
                       </td>
                   </tr>
                   {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

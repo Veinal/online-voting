@@ -2,8 +2,28 @@ import React from 'react'
 import SideBar from './SideBar'
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function UserDetails() {
+    const [getUser,setGetUSer]=useState([]) 
+
+    useEffect(()=>{
+        axios.get('http://localhost:7000/api/userreg/view')
+        .then((res)=>{
+            console.log(res.data)
+            setGetUSer(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    },[])
+
   return (
     <div className='bg-gray-900 h-screen'>
       <div className="p-4 sm:ml-64">
@@ -13,37 +33,14 @@ export default function UserDetails() {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white dark:bg-gray-900">
                 <div>
-                <Link to='/adduserdetails'>
+                {/* <Link to='/adduserdetails'>
                     <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
                         <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                         <AddIcon className='mb-0.5'/>
                         ADD
                         </span>
                     </button>
-                </Link>
-                    {/* <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                        <span className="sr-only">Action button</span>
-                        Action
-                        <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-                    <div id="dropdownAction" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate account</a>
-                            </li>
-                        </ul>
-                        <div className="py-1">
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete User</a>
-                        </div>
-                    </div> */}
+                </Link> */}
                 </div>
                 <label for="table-search" className="sr-only">Search</label>
                 <div className="relative">
@@ -68,7 +65,7 @@ export default function UserDetails() {
                             Name
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Email
+                            Phone
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Status
@@ -79,6 +76,7 @@ export default function UserDetails() {
                     </tr>
                 </thead>
                 <tbody>
+                    {getUser?.map((row)=>(
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-4">
                             <div className="flex items-center">
@@ -87,14 +85,14 @@ export default function UserDetails() {
                             </div>
                         </td>
                         <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Jese image"/>
+                            <img className="w-10 h-10 rounded-full" src={row.picture} alt="userPicture"/>
                             <div className="ps-3">
-                                <div className="text-base font-semibold">Neil Sims</div>
-                                <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
+                                <div className="text-base font-semibold">{row.userName}</div>
+                                <div className="font-normal text-gray-500">{row.email}</div>
                             </div>  
                         </th>
                         <td className="px-6 py-4">
-                            React Developer
+                            {row.phone}
                         </td>
                         <td className="px-6 py-4">
                             <div className="flex items-center">
@@ -102,113 +100,19 @@ export default function UserDetails() {
                             </div>
                         </td>
                         <td className="px-6 py-4">
-                            <a href="#" type="button" data-modal-target="editUserModal" data-modal-show="editUserModal" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                            <IconButton aria-label="edit" color='inherit'>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="view" color='inherit'>
+                                <VisibilityIcon />
+                            </IconButton>
+                            <IconButton aria-label="delete" color='inherit'>
+                                <DeleteIcon />
+                            </IconButton>
                         </td>
                     </tr>
-                    {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="Jese image"/>
-                            <div className="ps-3">
-                                <div className="text-base font-semibold">Bonnie Green</div>
-                                <div className="font-normal text-gray-500">bonnie@flowbite.com</div>
-                            </div>
-                        </th>
-                        <td className="px-6 py-4">
-                            Designer
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                            </div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" type="button" data-modal-show="editUserModal" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                        </td>
-                    </tr>
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-2.jpg" alt="Jese image"/>
-                            <div className="ps-3">
-                                <div className="text-base font-semibold">Jese Leos</div>
-                                <div className="font-normal text-gray-500">jese@flowbite.com</div>
-                            </div>
-                        </th>
-                        <td className="px-6 py-4">
-                            Vue JS Developer
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                            </div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" type="button" data-modal-show="editUserModal" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                        </td>
-                    </tr>
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-5.jpg" alt="Jese image"/>
-                            <div className="ps-3">
-                                <div className="text-base font-semibold">Thomas Lean</div>
-                                <div className="font-normal text-gray-500">thomes@flowbite.com</div>
-                            </div>
-                        </th>
-                        <td className="px-6 py-4">
-                            UI/UX Engineer
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                            </div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" type="button" data-modal-show="editUserModal" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                        </td>
-                    </tr>
-                    <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-4.jpg" alt="Jese image"/>
-                            <div className="ps-3">
-                                <div className="text-base font-semibold">Leslie Livingston</div>
-                                <div className="font-normal text-gray-500">leslie@flowbite.com</div>
-                            </div>
-                        </th>
-                        <td className="px-6 py-4">
-                            SEO Specialist
-                        </td>
-                        <td className="px-6 py-4">
-                            <div className="flex items-center">
-                                <div className="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Offline
-                            </div>
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" type="button" data-modal-show="editUserModal" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                        </td>
-                    </tr> */}
+                    ))}
+
                 </tbody>
             </table>
 
