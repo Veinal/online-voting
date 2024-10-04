@@ -27,7 +27,7 @@ export default function UserDetails() {
   return (
     <div className='bg-gray-900 h-screen'>
       <div className="p-4 sm:ml-64">
-        <h1 className="font-bold text-2xl my-3 text-white">USER DETAILS:</h1>
+        <h1 className="font-bold text-2xl mt-3 text-white">USER DETAILS:</h1>
         {/* <hr /> */}
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -100,9 +100,11 @@ export default function UserDetails() {
                             </div>
                         </td>
                         <td className="px-6 py-4">
-                            <IconButton aria-label="edit" color='inherit'>
-                                <EditIcon />
-                            </IconButton>
+                            <Link to='/edituserdetails'>
+                                <IconButton aria-label="edit" color='inherit'>
+                                    <EditIcon />
+                                </IconButton>
+                            </Link>
                             <IconButton aria-label="view" color='inherit'>
                                 <VisibilityIcon />
                             </IconButton>
@@ -117,7 +119,7 @@ export default function UserDetails() {
             </table>
 
 
-            <div id="editUserModal" tabindex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            {/* <div id="editUserModal" tabindex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div className="relative w-full max-w-2xl max-h-full">
                     <form className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
@@ -172,7 +174,9 @@ export default function UserDetails() {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> */}
+
+
         </div>
 
         {/* PAGINATION CODE: */}

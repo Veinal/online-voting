@@ -57,7 +57,7 @@ export default function Router() {
                 <Route path='/resultDetails' element={<WithSideBar><ResultDetails/></WithSideBar>}/>
                 <Route path='/userDetails' element={<WithSideBar><UserDetails/></WithSideBar>}/>
 
-                <Route path='/adduserdetails' element={<WithSideBar><EditUserDetails/></WithSideBar>}/>
+                <Route path='/edituserdetails' element={<WithSideBar><EditUserDetails/></WithSideBar>}/>
                 <Route path='/addelection' element={<WithSideBar><AddElection/></WithSideBar>}/>
 
                 <Route path='/usermodal' element={<UserModal/>} />

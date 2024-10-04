@@ -7,7 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function CandidateDetails() {
   return (
-    <div className='bg-gray-900 h-screen'>
+    <div className='bg-gray-900 min-h-screen'>
       <div className="p-4 sm:ml-64">
 
       <h1 className="font-bold text-2xl my-3 text-white">CANDIDATE DETAILS:</h1>
