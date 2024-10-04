@@ -15,6 +15,9 @@ const ElectionSchema=new Schema({
     endDate:{
         type:Date
     },
+    batch:{
+        type:String
+    },
     date:{
         type:Date,
         default:Date.now()

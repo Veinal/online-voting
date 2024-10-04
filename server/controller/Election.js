@@ -2,8 +2,8 @@ const ElectionSchema=require('../model/ElectionSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {electionName,description,startDate,endDate,date,status}=req.body;
-        const data=await new ElectionSchema({electionName,description,startDate,endDate,date,status})
+        const {electionName,description,startDate,endDate,batch,date,status}=req.body;
+        const data=await new ElectionSchema({electionName,description,startDate,endDate,batch,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -62,13 +62,14 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {electionName,description,startDate,endDate,date,status}=req.body
+    const {electionName,description,startDate,endDate,batch,date,status}=req.body
     try{
         const newData={}
         if(electionName){newData.electionName=electionName}
         if(description){newData.description=description}
         if(startDate){newData.startDate=startDate}
         if(endDate){newData.endDate=endDate}
+        if(batch){newData.batch=batch}
         if(date){newData.date=date}
         if(status){newData.status=status}
 
