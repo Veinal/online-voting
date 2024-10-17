@@ -18,6 +18,7 @@ import AdminLogin from './Admin/AdminLogin'
 import EditUserDetails from './Admin/EditUserDetails'
 import AddElection from './Admin/AddElection'
 import UserModal from './Admin/UserModal'
+import ElectionEditModal from './Admin/ElectionEditModal'
 
 
 export default function Router() {
@@ -59,6 +60,8 @@ export default function Router() {
 
                 <Route path='/edituserdetails' element={<WithSideBar><EditUserDetails/></WithSideBar>}/>
                 <Route path='/addelection' element={<WithSideBar><AddElection/></WithSideBar>}/>
+
+                <Route path='/electioneditmodal' element={<ElectionEditModal/>} />
 
                 <Route path='/usermodal' element={<UserModal/>} />
             </Routes>
