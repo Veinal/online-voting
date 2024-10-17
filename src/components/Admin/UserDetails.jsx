@@ -9,9 +9,93 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import UserViewModal from './UserViewModal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 750,
+  bgcolor: '#1F2937',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+  
+  // view modal
+  const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    // p: 2,
+  };
+  
+  // edit modal
+  // const style3 = {
+  //   position: 'absolute',
+  //   top: '50%',
+  //   left: '50%',
+  //   transform: 'translate(-50%, -50%)',
+  //   width: 400,
+  //   bgcolor: 'background.paper',
+  //   border: '2px solid #000',
+  //   boxShadow: 24,
+  //   p: 4,
+  // };
+  
+  // delete modal
+  const style4 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width:600,
+    height:150,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
 
 export default function UserDetails() {
     const [getUser,setGetUSer]=useState([]) 
+    const [selectedUser,setSelectedUser]=useState('')
+    const [count,setCount]=useState(0)
+
+    //view modal states
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = (row) => {
+        setOpen2(true);
+        setSelectedUser(row)
+        console.log(selectedUser,'selected election')
+    }
+    const handleClose2 = () => setOpen2(false);
+
+    //edit modal states
+    const [open3, setOpen3] = React.useState(false);
+    const handleOpen3 = (row) => {
+        setOpen3(true);
+        setSelectedUser(row)
+    }
+    const handleClose3 = () => setOpen3(false);
+
+    //delete modal states
+    const [open4, setOpen4] = React.useState(false);
+    const handleOpen4 = (row) => {
+        setOpen4(true);
+        setSelectedUser(row)
+    } 
+    const handleClose4 = () => setOpen4(false);
 
     useEffect(()=>{
         axios.get('http://localhost:7000/api/userreg/view')
@@ -22,7 +106,16 @@ export default function UserDetails() {
         .catch((err)=>{
             alert(err)
         })
-    },[])
+    },[count])
+
+    const HandleDelete=async()=>{
+      axios.delete(`http://localhost:7000/api/userreg/delete/${selectedUser._id}`)
+      .then((res)=>{
+        console.log(res.data)
+        handleClose4()
+        setCount((prev)=>!prev)
+      })
+    }
 
   return (
     <div className='bg-gray-900 h-screen'>
@@ -100,15 +193,15 @@ export default function UserDetails() {
                             </div>
                         </td>
                         <td className="px-6 py-4">
-                            <Link to='/edituserdetails'>
-                                <IconButton aria-label="edit" color='inherit'>
-                                    <EditIcon />
-                                </IconButton>
+                            <Link to={`/edituserdetails/${row._id}`}>
+                              <IconButton aria-label="edit" color='inherit'>
+                                  <EditIcon />
+                              </IconButton>
                             </Link>
-                            <IconButton aria-label="view" color='inherit'>
+                            <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
                                 <VisibilityIcon />
                             </IconButton>
-                            <IconButton aria-label="delete" color='inherit'>
+                            <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
                                 <DeleteIcon />
                             </IconButton>
                         </td>
@@ -117,65 +210,6 @@ export default function UserDetails() {
 
                 </tbody>
             </table>
-
-
-            {/* <div id="editUserModal" tabindex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div className="relative w-full max-w-2xl max-h-full">
-                    <form className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                Edit user
-                            </h3>
-                          <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="editUserModal">
-                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span className="sr-only">Close modal</span>
-                        </button>
-                        </div>
-                        <div className="p-6 space-y-6">
-                            <div className="grid grid-cols-6 gap-6">
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="first-name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                                    <input type="text" name="first-name" id="first-name" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Bonnie" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="last-name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                                    <input type="text" name="last-name" id="last-name" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Green" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                    <input type="email" name="email" id="email" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="example@company.com" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="phone-number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                                    <input type="number" name="phone-number" id="phone-number" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. +(12)3456 789" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="department" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                                    <input type="text" name="department" id="department" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Development" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="company" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
-                                    <input type="number" name="company" id="company" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123456" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="current-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current Password</label>
-                                    <input type="password" name="current-password" id="current-password" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" required=""/>
-                                </div>
-                                <div className="col-span-6 sm:col-span-3">
-                                    <label for="new-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password</label>
-                                    <input type="password" name="new-password" id="new-password" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••" required=""/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center p-6 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save all</button>
-                        </div>
-                    </form>
-                </div>
-            </div> */}
-
 
         </div>
 
@@ -210,6 +244,53 @@ export default function UserDetails() {
       </div>
 
       </div>
+
+      {/* view modal */}
+
+    <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <UserViewModal selectedUser={selectedUser} handleClose2={handleClose2}/>
+        </Box>
+      </Modal>             
+
+    {/* edit modal */}
+
+    {/* <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <UserEditModal selectedUser={selectedUser} handleClose3={handleClose3} setCount={setCount}/>
+        </Box>
+      </Modal>  */}
+
+    {/* delete modal */}
+
+    <Modal
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style4}>
+          <h1 className='font-semibold text-2xl'>Do you want to delete this data?</h1>
+          <div className='flex justify-end gap-4 mt-7'>
+            <Button onClick={handleClose4} variant="contained" color="inherit">
+              cancel
+            </Button>
+            <Button onClick={HandleDelete} variant="contained" color="error">
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   )
 }

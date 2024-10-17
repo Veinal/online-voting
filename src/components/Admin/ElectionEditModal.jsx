@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -19,35 +20,60 @@ const style = {
 
 export default function ElectionEditModal(props) {
 
-  const [election,setElection]=useState()
   const [getElection,setGetElection]=useState([])
+  const navigate=useNavigate()
+  
 
   useEffect(()=>{
-    axios.get(`http://localhost/api/election/singleview/${props.selectedElect._id}`)
-    .then((res)=>{
-      console.log(res.data)
-      setGetElection(res.data)
-    })
-    .catch((err)=>{
-      alert(err)
-    })
-  },[])
+    axios.get(`http://localhost:7000/api/election/singleview/${props.selectedElect._id}`)
+      .then((res) => {
+        const electionData = res.data;
+        // Format dates to 'YYYY-MM-DD' for date input compatibility
+        if (electionData.startDate) {
+          electionData.startDate = formatDate(electionData.startDate);
+        }
+        if (electionData.endDate) {
+          electionData.endDate = formatDate(electionData.endDate);
+        }
+        setGetElection(electionData);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, []);
 
-  const HandleChange=()=>{
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Format date as 'YYYY-MM-DD'
+    return date.toISOString().split('T')[0];
+  };
 
+
+  const HandleChange=(e)=>{
+    setGetElection({...getElection,[e.target.name]:e.target.value})
   }
 
-  const HandleSubmit=()=>{
+  const HandleSubmit=async(e)=>{
+    e.preventDefault();
 
+    axios.put(`http://localhost:7000/api/election/update/${props.selectedElect._id}`,getElection)
+    .then((res)=>{
+      console.log(res.data,'res')
+      props.setCount((prev)=>!prev)
+      navigate(props.handleClose3())
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   return (
     <div>
       <Box sx={style} className="bg-gray-900 text-white rounded-lg">
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          <span className='font-bold text-2xl'>CREATE ELECTION</span>
+          <span className='font-bold text-2xl'>EDIT ELECTION</span>
         </Typography>
-        <form className="mt-4" onSubmit={HandleSubmit}>
+        <form className="mt-4" onSubmit={HandleSubmit}async>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="election-name">
               Election Name
@@ -60,6 +86,7 @@ export default function ElectionEditModal(props) {
               required
               name='electionName'
               onChange={(e)=>HandleChange(e)}
+              value={getElection?.electionName}
             />
           </div>
 
@@ -75,6 +102,7 @@ export default function ElectionEditModal(props) {
               required
               name='description'
               onChange={(e)=>HandleChange(e)}
+              value={getElection?.description}
             ></textarea>
           </div>
 
@@ -89,6 +117,7 @@ export default function ElectionEditModal(props) {
               required
               name='startDate'
               onChange={(e)=>HandleChange(e)}
+              value={getElection?.startDate}
             />
           </div>
 
@@ -103,6 +132,7 @@ export default function ElectionEditModal(props) {
               required
               name='endDate'
               onChange={(e)=>HandleChange(e)}
+              value={getElection?.endDate}
             />
           </div>
 
@@ -110,7 +140,7 @@ export default function ElectionEditModal(props) {
             <label className="block text-sm font-medium mb-2" htmlFor="choose-batch">
                 Choose Batch
             </label>
-            <select name="batch" id="choose-batch" onChange={(e)=>HandleChange(e)} className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+            <select name="batch" id="choose-batch" value={getElection?.batch} onChange={(e)=>HandleChange(e)} className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
               <option value=" ">choose the batch</option>
               <option value="student">Students</option>
               <option value="teacher">Teachers</option>
