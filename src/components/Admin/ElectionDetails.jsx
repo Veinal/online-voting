@@ -14,6 +14,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import ElectionViewModal from './ElectionViewModal';
+import ElectionEditModal from './ElectionEditModal';
 
 const style = {
   position: 'absolute',
@@ -78,6 +79,8 @@ export default function ElectionDetails() {
     //state for modal when exporting to other components as props
     const [selectedElect,setSelectedElect]=useState('')
 
+    const [count,setCount]=useState(0)
+
     //modal states for creating election
     const [open, setOpen] = React.useState(false);
     const handleOpen = () =>  setOpen(true);
@@ -94,12 +97,18 @@ export default function ElectionDetails() {
 
     //edit modal states
     const [open3, setOpen3] = React.useState(false);
-    const handleOpen3 = () => setOpen3(true);
+    const handleOpen3 = (row) => {
+      setOpen3(true);
+      setSelectedElect(row)
+    }
     const handleClose3 = () => setOpen3(false);
 
     //delete modal states
     const [open4, setOpen4] = React.useState(false);
-    const handleOpen4 = () => setOpen4(true);
+    const handleOpen4 = (row) => {
+      setOpen4(true);
+      setSelectedElect(row)
+    } 
     const handleClose4 = () => setOpen4(false);
 
 
@@ -112,7 +121,7 @@ export default function ElectionDetails() {
         .catch((err)=>{
             alert(err)
         })
-    },[])
+    },[count])
 
     const HandleChange=(e)=>{
         setElection({...election,[e.target.name]:e.target.value})
@@ -126,6 +135,7 @@ export default function ElectionDetails() {
         .then((res)=>{
             console.log(res.data)
             handleClose();
+            setCount((prev)=>!prev)
         })
         .catch((err)=>{
             console.log(err)
@@ -133,7 +143,15 @@ export default function ElectionDetails() {
     }
 
     const HandleDelete=async()=>{
-      axios.delete('http://localhost:7000/api/election/delete')
+      axios.delete(`http://localhost:7000/api/election/delete/${selectedElect._id}`)
+      .then((res)=>{
+        console.log(res.data)
+        handleClose4()
+        setCount((prev)=>!prev)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
     }
 
   return (
@@ -209,13 +227,13 @@ export default function ElectionDetails() {
                         {row.endDate ? new Date(row.endDate).toLocaleDateString('en-CA') : 'N/A'}
                       </td>
                       <td className="px-6 py-4">
-                            <IconButton aria-label="edit" color='inherit'>
+                            <IconButton onClick={()=>handleOpen3(row)} aria-label="edit" color='inherit'>
                                 <EditIcon />
                             </IconButton>
                             <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
                                 <VisibilityIcon />
                             </IconButton>
-                            <IconButton onClick={handleOpen4} aria-label="delete" color='inherit'>
+                            <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
                                 <DeleteIcon />
                             </IconButton>
                       </td>
@@ -257,7 +275,7 @@ export default function ElectionDetails() {
 
       </div>
 
-      {/* modal code */}
+      {/* create election modal code */}
 
       <Modal
       open={open}
@@ -365,20 +383,15 @@ export default function ElectionDetails() {
     {/* edit modal */}
 
     <Modal
-        open={open}
-        onClose={handleClose}
+        open={open3}
+        onClose={handleClose3}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <ElectionEditModal selectedElect={selectedElect}/>
         </Box>
-      </Modal>
+      </Modal> 
 
     {/* delete modal */}
 
