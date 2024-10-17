@@ -389,7 +389,7 @@ export default function ElectionDetails() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ElectionEditModal selectedElect={selectedElect}/>
+          <ElectionEditModal selectedElect={selectedElect} handleClose3={handleClose3} setCount={setCount}/>
         </Box>
       </Modal> 
 

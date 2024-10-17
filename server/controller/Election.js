@@ -17,7 +17,7 @@ const Insert=async(req,res)=>{
 const View=async(req,res)=>{
     try{
         const data=await ElectionSchema.find();
-        console.log(data,"view all candidates")
+        // console.log(data,"view all candidates")
         res.json(data)
     }
     catch(err){
@@ -33,7 +33,7 @@ const SingleView=async(req,res)=>{
             console.log("data not found with this id")
             return res.status(404).send("Data doesn't exist with this id")
         }else{
-            console.log(data,"singleview data")
+            // console.log(data,"singleview data")
             res.json(data)
         }
     }

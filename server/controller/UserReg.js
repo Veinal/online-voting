@@ -23,7 +23,7 @@ const Login=async(req,res)=>{
     const {email,password}=req.body
     try{
         const user =await UserSchema.findOne({email})
-        console.log(user,"user")
+        // console.log(user,"user")
         if(!user){
             return res.json({error:"Invalid user email address"})
         }
@@ -42,7 +42,7 @@ const Login=async(req,res)=>{
 const View=async(req,res)=>{
     try{
         const data=await UserSchema.find();
-        console.log(data,"user login view")
+        // console.log(data,"user login view")
         res.json(data)
     }
     catch(err){
