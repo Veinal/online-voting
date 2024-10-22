@@ -2,8 +2,8 @@ const CandiSchema=require('../model/CandiSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {partyName,manifesto,voteCount,date,status}=req.body;
-        const data=await new CandiSchema({partyName,manifesto,voteCount,date,status})
+        const {userName,manifesto,voteCount,date,status}=req.body;
+        const data=await new CandiSchema({user_id:userName,manifesto,voteCount,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -16,8 +16,8 @@ const Insert=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await CandiSchema.find();
-        console.log(data,"view all candidates")
+        const data=await CandiSchema.find().populate("user_id");
+        // console.log(data,"view all candidates")
         res.json(data)
     }
     catch(err){
@@ -62,10 +62,10 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {partyName,manifesto,voteCount,date,status}=req.body
+    const {user_id,manifesto,voteCount,date,status}=req.body
     try{
         const newData={}
-        if(partyName){newData.partyName=partyName}
+        if(user_id){newData.user_id=user_id}
         if(manifesto){newData.manifesto=manifesto}
         if(voteCount){newData.voteCount=voteCount}
         if(date){newData.date=date}

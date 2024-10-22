@@ -4,8 +4,89 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import FeedbackViewModal from './FeedbackViewModal';
+import Tooltip from '@mui/material/Tooltip';
+
+// view modal
+const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
+  
+  // delete modal
+  const style4 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width:600,
+    height:150,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
 
 export default function FeedbackDetails() {
+
+    const [getFeed,setGetFeed]=useState()
+    const [selectedFeed,setSelectedFeed]=useState('')
+    const [count,setCount]=useState(0)
+
+    //view modal states
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = (row) => {
+      setOpen2(true);
+      setSelectedFeed(row)
+      console.log(selectedFeed,'selected election')
+    }
+    const handleClose2 = () => setOpen2(false);
+
+    //delete modal states
+    const [open4, setOpen4] = React.useState(false);
+    const handleOpen4 = (row) => {
+      setOpen4(true);
+      setSelectedFeed(row)
+    } 
+    console.log(selectedFeed,'sf')
+    const handleClose4 = () => setOpen4(false);
+
+    useEffect(()=>{
+        axios.get('http://localhost:7000/api/feedback/view')
+        .then((res)=>{
+            console.log(res.data)
+            setGetFeed(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    },[count])
+
+    const HandleDelete=()=>{
+        axios.delete(`http://localhost:7000/api/feedback/delete/${selectedFeed._id}`)
+        .then((res)=>{
+            console.log(res.data)
+            setCount((prev)=>!prev)
+        }) 
+        .catch((err)=>{
+            alert(err)
+        })
+    }
+
   return (
     <div className='bg-gray-900 h-screen'>
       <div className="p-4 sm:ml-64">
@@ -77,16 +158,16 @@ export default function FeedbackDetails() {
                           </div>
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Product name
+                          FEEDBACK
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Color
+                          USER
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Category
+                          ROLE
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Price
+                          STATUS
                       </th>
                       <th scope="col" className="px-6 py-3">
                           Action
@@ -94,6 +175,7 @@ export default function FeedbackDetails() {
                   </tr>
               </thead>
               <tbody>
+                {getFeed?.map((row)=>(
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                           <div className="flex items-center">
@@ -102,144 +184,34 @@ export default function FeedbackDetails() {
                           </div>
                       </td>
                       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple MacBook Pro 17"
+                          {row?.feedback}
                       </th>
                       <td className="px-6 py-4">
-                          Silver
+                          {row?.user_id}
                       </td>
                       <td className="px-6 py-4">
-                          Laptop
+                          {row?.user_id?.role}
                       </td>
                       <td className="px-6 py-4">
-                          $2999
+                          {row?.status}
                       </td>
                       <td className="px-6 py-4">
-                            <IconButton IconButton aria-label="edit" color='inherit'>
+                            {/* <IconButton IconButton aria-label="edit" color='inherit'>
                                 <EditIcon />
-                            </IconButton>
-                            <IconButton aria-label="view" color='inherit'>
-                                <VisibilityIcon />
-                            </IconButton>
-                            <IconButton aria-label="delete" color='inherit'>
-                                <DeleteIcon />
-                            </IconButton>
+                            </IconButton> */}
+                            <Tooltip title="view">
+                                <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
+                                    <VisibilityIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="delete">
+                                <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
                       </td>
                   </tr>
-                  {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Microsoft Surface Pro
-                      </th>
-                      <td className="px-6 py-4">
-                          White
-                      </td>
-                      <td className="px-6 py-4">
-                          Laptop PC
-                      </td>
-                      <td className="px-6 py-4">
-                          $1999
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Magic Mouse 2
-                      </th>
-                      <td className="px-6 py-4">
-                          Black
-                      </td>
-                      <td className="px-6 py-4">
-                          Accessories
-                      </td>
-                      <td className="px-6 py-4">
-                          $99
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple Watch
-                      </th>
-                      <td className="px-6 py-4">
-                          Silver
-                      </td>
-                      <td className="px-6 py-4">
-                          Accessories
-                      </td>
-                      <td className="px-6 py-4">
-                          $179
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          iPad
-                      </th>
-                      <td className="px-6 py-4">
-                          Gold
-                      </td>
-                      <td className="px-6 py-4">
-                          Tablet
-                      </td>
-                      <td className="px-6 py-4">
-                          $699
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple iMac 27"
-                      </th>
-                      <td className="px-6 py-4">
-                          Silver
-                      </td>
-                      <td className="px-6 py-4">
-                          PC Desktop
-                      </td>
-                      <td className="px-6 py-4">
-                          $3999
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr> */}
+                ))}
               </tbody>
           </table>
       </div>
@@ -275,6 +247,41 @@ export default function FeedbackDetails() {
       </div>
 
       </div>
+
+    {/* view modal */}
+
+    <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <FeedbackViewModal selectedFeed={selectedFeed} handleClose2={handleClose2}/>
+        </Box>
+      </Modal>             
+
+    {/* delete modal */}
+
+    <Modal
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style4}>
+          <h1 className='font-semibold text-2xl'>Do you want to delete this data?</h1>
+          <div className='flex justify-end gap-4 mt-7'>
+            <Button onClick={handleClose4} variant="contained" color="inherit">
+              cancel
+            </Button>
+            <Button onClick={HandleDelete} variant="contained" color="error">
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
     </div>
   )
 }

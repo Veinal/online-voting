@@ -18,7 +18,7 @@ const Insert=async(req,res)=>{
 const View=async(req,res)=>{
     try{
         const data=await FeedBackSchema.find();
-        console.log(data,"view all candidates")
+        // console.log(data,"view all candidates")
         res.json(data)
     }
     catch(err){

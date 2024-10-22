@@ -15,6 +15,9 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import ElectionViewModal from './ElectionViewModal';
 import ElectionEditModal from './ElectionEditModal';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import Tooltip from '@mui/material/Tooltip';
+
 
 const style = {
   position: 'absolute',
@@ -227,15 +230,27 @@ export default function ElectionDetails() {
                         {row.endDate ? new Date(row.endDate).toLocaleDateString('en-CA') : 'N/A'}
                       </td>
                       <td className="px-6 py-4">
-                            <IconButton onClick={()=>handleOpen3(row)} aria-label="edit" color='inherit'>
-                                <EditIcon />
-                            </IconButton>
-                            <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
-                                <VisibilityIcon />
-                            </IconButton>
-                            <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
-                                <DeleteIcon />
-                            </IconButton>
+                            <Tooltip title="edit">
+                              <IconButton onClick={()=>handleOpen3(row)} aria-label="edit" color='inherit'>
+                                  <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="view">
+                              <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
+                                  <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="delete">
+                              <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
+                                  <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Add candidate">
+                              <IconButton aria-label="delete" color='inherit'>
+                                  <PersonAddIcon />
+                              </IconButton>
+                            </Tooltip>
+                            
                       </td>
                   </tr>
                   ))}
