@@ -12,6 +12,8 @@ import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import CandidateViewModal from './CandidateViewModal';
+import Tooltip from '@mui/material/Tooltip';
 
 const style = {
     position: 'absolute',
@@ -25,27 +27,111 @@ const style = {
     p: 4,
   };
 
+  // view modal
+const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
+  
+  // edit modal
+const style3 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  
+  // delete modal
+const style4 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width:600,
+    height:150,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
+
 export default function CandidateDetails() {
 
     const [cand,setCand]=useState()
-    const [getUser,setGetUser]=useState({})
+    const [getUser,setGetUser]=useState([])
+    const [getCand,setGetCand]=useState([])
+    const [selectedCand,setSelectedCand]=useState('')
+    const [count,setCount]=useState(0)
 
     //modal states for creating election
     const [open, setOpen] = React.useState(false);
     const handleOpen = () =>  setOpen(true);
     const handleClose = () => setOpen(false);
 
+    //view modal states
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = (row) => {
+      setOpen2(true);
+      setSelectedCand(row)
+      console.log(selectedCand,'selected election')
+    }
+    const handleClose2 = () => setOpen2(false);
+
+    //edit modal states
+    const [open3, setOpen3] = React.useState(false);
+    const handleOpen3 = (row) => {
+      setOpen3(true);
+      setSelectedCand(row)
+    }
+    const handleClose3 = () => setOpen3(false);
+
+    //delete modal states
+    const [open4, setOpen4] = React.useState(false);
+    const handleOpen4 = (row) => {
+      setOpen4(true);
+      setSelectedCand(row)
+    } 
+    const handleClose4 = () => setOpen4(false);
+
+
     useEffect(()=>{
         axios.get('http://localhost:7000/api/userreg/view')
         .then((res)=>{
-
+            setGetUser(res.data)
+        })
+        .catch((err)=>{
+            alert(err,"getuser in candidate")
         })
     },[])
+    
+
+    useEffect(()=>{
+        axios.get('http://localhost:7000/api/candidate/view')
+        .then((res)=>{
+            setGetCand(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    },[count])
+    console.log(getCand,'gc')
 
     const HandleChange=(e)=>{
         setCand({...cand,[e.target.name]:e.target.value})
     }
-    console.log(cand,"cand")
+    // console.log(cand,"cand")
 
     const HandleSubmit=(e)=>{
         e.preventDefault()
@@ -53,10 +139,24 @@ export default function CandidateDetails() {
         axios.post('http://localhost:7000/api/candidate/insert',cand)
         .then((res)=>{
             console.log(res.data)
+            handleClose()
+            setCount((prev)=>!prev)
         })
         .catch((err)=>{
             alert(err)
         })
+    }
+
+    const HandleDelete=()=>{
+      axios.delete(`http://localhost:7000/api/candidate/delete/${selectedCand._id}`)
+      .then((res)=>{
+        console.log(res.data)
+        handleClose4()
+        setCount((prev)=>!prev)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
     }
 
   return (
@@ -129,16 +229,16 @@ export default function CandidateDetails() {
                           </div>
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Product name
+                          Candidate name
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Color
+                          Manifesto
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Category
+                          Role
                       </th>
                       <th scope="col" className="px-6 py-3">
-                          Price
+                          Status
                       </th>
                       <th scope="col" className="px-6 py-3">
                           Action
@@ -146,6 +246,7 @@ export default function CandidateDetails() {
                   </tr>
               </thead>
               <tbody>
+                {getCand?.map((row)=>(
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                           <div className="flex items-center">
@@ -154,30 +255,34 @@ export default function CandidateDetails() {
                           </div>
                       </td>
                       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple MacBook Pro 17"
+                          {row?.user_id?.userName}
                       </th>
                       <td className="px-6 py-4">
-                          Silver
+                          {row?.manifesto ? `${row.manifesto.split(' ').slice(0, 5).join(' ')}...` : 'N/A'}
                       </td>
                       <td className="px-6 py-4">
-                          Laptop
+                          {row?.user_id?.role}
                       </td>
                       <td className="px-6 py-4">
-                          $2999
+                          {row?.status || ''}
                       </td>
                       <td className="px-6 py-4">
-                            <IconButton aria-label="edit" color='inherit'>
+                            {/* <IconButton aria-label="edit" color='inherit'>
                                 <EditIcon />
-                            </IconButton>
-                            <IconButton aria-label="view" color='inherit'>
-                                <VisibilityIcon />
-                            </IconButton>
-                            <IconButton aria-label="delete" color='inherit'>
-                                <DeleteIcon />
-                            </IconButton>
+                            </IconButton> */}
+                            <Tooltip title="view">
+                              <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
+                                  <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="delete">
+                              <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
+                                  <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                       </td>
                   </tr>
-                  
+                ))}
               </tbody>
           </table>
       </div>        
@@ -233,17 +338,21 @@ export default function CandidateDetails() {
                     <label className="block text-sm font-medium mb-2" htmlFor="select-user">
                         Select User
                     </label>
+                    
                     <select 
-                        name="user" 
+                        name="userName" 
                         id="select-user" 
                         onChange={(e) => HandleChange(e)} 
                         className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
                         required
                     >
                         <option value="">Choose a user</option>
-                        <option value="student">Student</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="admin">Admin</option>
+                        {getUser.map((row)=>(
+                            <>
+                                <option key={row._id} value={row._id}>{row?.userName}</option>
+                            </>
+                        ))}
+                        
                     </select>
                 </div>
 
@@ -274,6 +383,39 @@ export default function CandidateDetails() {
         </Box>
     </Modal>
 
+    {/* view modal */}
+
+    <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <CandidateViewModal selectedCand={selectedCand} handleClose2={handleClose2}/>
+        </Box>
+      </Modal>  
+
+    {/* delete modal */}
+
+    <Modal
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style4}>
+          <h1 className='font-semibold text-2xl'>Do you want to delete this data?</h1>
+          <div className='flex justify-end gap-4 mt-7'>
+            <Button onClick={handleClose4} variant="contained" color="inherit">
+              cancel
+            </Button>
+            <Button onClick={HandleDelete} variant="contained" color="error">
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
 
     </div>
   )

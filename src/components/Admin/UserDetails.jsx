@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Tooltip from '@mui/material/Tooltip';
 import UserViewModal from './UserViewModal';
 
 const style = {
@@ -200,16 +201,22 @@ export default function UserDetails() {
                         </td>
                         <td className="px-6 py-4">
                             <Link to={`/edituserdetails/${row._id}`}>
-                              <IconButton aria-label="edit" color='inherit'>
-                                  <EditIcon />
-                              </IconButton>
+                              <Tooltip title="edit">
+                                <IconButton aria-label="edit" color='inherit'>
+                                    <EditIcon />
+                                </IconButton>
+                              </Tooltip>
                             </Link>
-                            <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
-                                <VisibilityIcon />
-                            </IconButton>
-                            <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
-                                <DeleteIcon />
-                            </IconButton>
+                            <Tooltip title="view">
+                              <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
+                                  <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="delete">
+                              <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
+                                  <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
                         </td>
                     </tr>
                     ))}
