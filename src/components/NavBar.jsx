@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link,useLocation } from 'react-router-dom'
+import logo from '../voteHub_logo.jpeg'
 
 export default function NavBar() {
     const location =useLocation();
@@ -26,7 +27,7 @@ export default function NavBar() {
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
+            <img class="h-9 w-auto rounded-full" src={logo} alt="Your Company"/>
             </div>
             <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">

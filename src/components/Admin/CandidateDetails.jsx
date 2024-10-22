@@ -3,9 +3,62 @@ import SideBar from './SideBar'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add'
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 750,
+    bgcolor: '#1F2937',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 export default function CandidateDetails() {
+
+    const [cand,setCand]=useState()
+    const [getUser,setGetUser]=useState({})
+
+    //modal states for creating election
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () =>  setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    useEffect(()=>{
+        axios.get('http://localhost:7000/api/userreg/view')
+        .then((res)=>{
+
+        })
+    },[])
+
+    const HandleChange=(e)=>{
+        setCand({...cand,[e.target.name]:e.target.value})
+    }
+    console.log(cand,"cand")
+
+    const HandleSubmit=(e)=>{
+        e.preventDefault()
+
+        axios.post('http://localhost:7000/api/candidate/insert',cand)
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    }
+
   return (
     <div className='bg-gray-900 min-h-screen'>
       <div className="p-4 sm:ml-64">
@@ -15,15 +68,14 @@ export default function CandidateDetails() {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <div className="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
               <div>
-                  <button id="dropdownRadioButton" data-dropdown-toggle="dropdownRadio" className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                      <svg className="w-3 h-3 text-gray-500 dark:text-gray-400 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
-                          </svg>
-                      Last 30 days
-                      <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                      </svg>
+                  <div>
+                  <button onClick={handleOpen} class="relative inline-flex items-center justify-center p-0.5 mb-1 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                    <span class="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        <AddIcon className='mb-0.5'/>
+                        ADD CANDIDATE
+                    </span>
                   </button>
+                  </div>
                   <div id="dropdownRadio" className="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style={{"position": "absolute", "inset": "auto auto 0px 0px", "margin": "0px", "transform": "translate3d(522.5px, 3847.5px, 0px)"}}>
                       <ul className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
                           <li>
@@ -125,121 +177,7 @@ export default function CandidateDetails() {
                             </IconButton>
                       </td>
                   </tr>
-                  {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Microsoft Surface Pro
-                      </th>
-                      <td className="px-6 py-4">
-                          White
-                      </td>
-                      <td className="px-6 py-4">
-                          Laptop PC
-                      </td>
-                      <td className="px-6 py-4">
-                          $1999
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Magic Mouse 2
-                      </th>
-                      <td className="px-6 py-4">
-                          Black
-                      </td>
-                      <td className="px-6 py-4">
-                          Accessories
-                      </td>
-                      <td className="px-6 py-4">
-                          $99
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple Watch
-                      </th>
-                      <td className="px-6 py-4">
-                          Silver
-                      </td>
-                      <td className="px-6 py-4">
-                          Accessories
-                      </td>
-                      <td className="px-6 py-4">
-                          $179
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          iPad
-                      </th>
-                      <td className="px-6 py-4">
-                          Gold
-                      </td>
-                      <td className="px-6 py-4">
-                          Tablet
-                      </td>
-                      <td className="px-6 py-4">
-                          $699
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr>
-                  <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td className="w-4 p-4">
-                          <div className="flex items-center">
-                              <input id="checkbox-table-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                              <label for="checkbox-table-3" className="sr-only">checkbox</label>
-                          </div>
-                      </td>
-                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Apple iMac 27"
-                      </th>
-                      <td className="px-6 py-4">
-                          Silver
-                      </td>
-                      <td className="px-6 py-4">
-                          PC Desktop
-                      </td>
-                      <td className="px-6 py-4">
-                          $3999
-                      </td>
-                      <td className="px-6 py-4">
-                          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                      </td>
-                  </tr> */}
+                  
               </tbody>
           </table>
       </div>        
@@ -275,6 +213,68 @@ export default function CandidateDetails() {
       </div>
 
       </div>
+
+      {/* add candidate modal */}
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="bg-gray-900 text-white rounded-lg">
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+                <span className='font-bold text-2xl'>CHOOSE CANDIDATE</span>
+            </Typography>
+            <form className="mt-4" onSubmit={HandleSubmit}>
+                
+                {/* Dropdown to select user */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-2" htmlFor="select-user">
+                        Select User
+                    </label>
+                    <select 
+                        name="user" 
+                        id="select-user" 
+                        onChange={(e) => HandleChange(e)} 
+                        className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                        required
+                    >
+                        <option value="">Choose a user</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                {/* Manifesto textarea */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium mb-2" htmlFor="manifesto">
+                        Manifesto
+                    </label>
+                    <textarea
+                        id="manifesto"
+                        className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                        placeholder="Enter manifesto"
+                        rows="4"
+                        required
+                        name='manifesto'
+                        onChange={(e) => HandleChange(e)}
+                    ></textarea>
+                </div>
+
+                {/* Submit button */}
+                <button
+                    type="submit"
+                    className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                >
+                    Submit
+                </button>
+            </form>
+        </Box>
+    </Modal>
+
+
     </div>
   )
 }

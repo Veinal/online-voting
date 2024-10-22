@@ -2,8 +2,8 @@ const CandiSchema=require('../model/CandiSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {partyName,symbol,voteCount,date,status}=req.body;
-        const data=await new CandiSchema({partyName,symbol,voteCount,date,status})
+        const {partyName,manifesto,voteCount,date,status}=req.body;
+        const data=await new CandiSchema({partyName,manifesto,voteCount,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -62,11 +62,11 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {partyName,symbol,voteCount,date,status}=req.body
+    const {partyName,manifesto,voteCount,date,status}=req.body
     try{
         const newData={}
         if(partyName){newData.partyName=partyName}
-        if(symbol){newData.symbol=symbol}
+        if(manifesto){newData.manifesto=manifesto}
         if(voteCount){newData.voteCount=voteCount}
         if(date){newData.date=date}
         if(status){newData.status=status}

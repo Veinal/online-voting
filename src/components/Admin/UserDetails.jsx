@@ -161,6 +161,9 @@ export default function UserDetails() {
                             Phone
                         </th>
                         <th scope="col" className="px-6 py-3">
+                            Role
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                             Status
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -186,6 +189,9 @@ export default function UserDetails() {
                         </th>
                         <td className="px-6 py-4">
                             {row.phone}
+                        </td>
+                        <td className="px-6 py-4">
+                            {row.role}
                         </td>
                         <td className="px-6 py-4">
                             <div className="flex items-center">
