@@ -2,8 +2,8 @@ const ElectionSchema=require('../model/ElectionSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {electionName,description,startDate,endDate,batch,date,status}=req.body;
-        const data=await new ElectionSchema({electionName,description,startDate,endDate,batch,date,status})
+        const {candidates,electionName,description,startDate,endDate,batch,date,status}=req.body;
+        const data=await new ElectionSchema({candidate_id:candidates,electionName,description,startDate,endDate,batch,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -16,7 +16,7 @@ const Insert=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await ElectionSchema.find();
+        const data=await ElectionSchema.find().populate("candidate_id");
         // console.log(data,"view all candidates")
         res.json(data)
     }
