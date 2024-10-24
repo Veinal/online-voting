@@ -17,6 +17,12 @@ import ElectionViewModal from './ElectionViewModal';
 import ElectionEditModal from './ElectionEditModal';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import { blue } from '@mui/material/colors';
+
 
 
 const style = {
@@ -72,15 +78,16 @@ const style4 = {
 };
 
 
-
 export default function ElectionDetails() {
     //state for the election form
-    const [election,setElection]=useState()
+    const [election,setElection]=useState({startDate:''})
     //state to get the election details
     const [getElec,setGetElec]=useState([])
     const navigate=useNavigate()
     //state for modal when exporting to other components as props
     const [selectedElect,setSelectedElect]=useState('')
+    //state to get candidate
+    const [getCand,setGetCand]=useState([])
 
     const [count,setCount]=useState(0)
 
@@ -114,7 +121,6 @@ export default function ElectionDetails() {
     } 
     const handleClose4 = () => setOpen4(false);
 
-
     useEffect(()=>{
         axios.get('http://localhost:7000/api/election/view')
         .then((res)=>{
@@ -125,6 +131,23 @@ export default function ElectionDetails() {
             alert(err)
         })
     },[count])
+
+    useEffect(()=>{
+      axios.get('http:///localhost:7000/api/candidate/view')
+      .then((res)=>{
+        console.log(res.data,"for candidates")
+        setGetCand(res.data)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+    },[])
+
+    //to get the current date for the start date
+    const getCurrentDate = () => {
+      const today = new Date();
+      return today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    };
 
     const HandleChange=(e)=>{
         setElection({...election,[e.target.name]:e.target.value})
@@ -245,11 +268,11 @@ export default function ElectionDetails() {
                                   <DeleteIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Add candidate">
-                              <IconButton aria-label="delete" color='inherit'>
+                            {/* <Tooltip title="Add candidate">
+                              <IconButton onClick={()=>handleOpen5(row)} aria-label="delete" color='inherit'>
                                   <PersonAddIcon />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
                             
                       </td>
                   </tr>
@@ -298,7 +321,7 @@ export default function ElectionDetails() {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} className="bg-gray-900 text-white rounded-lg">
+      <Box sx={style} className="bg-gray-900 text-white rounded-lg overflow-y-auto h-screen">
         <Typography id="modal-modal-title" variant="h6" component="h2">
           <span className='font-bold text-2xl'>CREATE ELECTION</span>
         </Typography>
@@ -343,6 +366,7 @@ export default function ElectionDetails() {
               className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
               required
               name='startDate'
+              min={getCurrentDate()}  //min will be the current date
               onChange={(e)=>HandleChange(e)}
             />
           </div>
@@ -357,6 +381,7 @@ export default function ElectionDetails() {
               className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
               required
               name='endDate'
+              min={election.startDate} //min will be the start date
               onChange={(e)=>HandleChange(e)}
             />
           </div>
@@ -369,6 +394,18 @@ export default function ElectionDetails() {
               <option value=" ">choose the batch</option>
               <option value="student">Students</option>
               <option value="teacher">Teachers</option>
+            </select>
+          </div>
+
+          <div className='mb-4'>
+            <label className="block text-sm font-medium mb-2" htmlFor="choose-candidate">
+                Choose Candidates
+            </label>
+            <select name="candidates" id="choose-candidate" multiple size={3} onChange={(e)=>HandleChange(e)} className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+              <option value=" " className='text-gray-500'>choose the candidates</option>
+              {getCand?.map((row)=>(
+                <option key={row?._id} value={row?._id}>{row?.user_id?.userName}</option>
+              ))}
             </select>
           </div>
           
