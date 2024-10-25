@@ -2,8 +2,8 @@ const ResultSchema=require('../model/ResultsSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {winner,date,status}=req.body;
-        const data=await new ResultSchema({winner,date,status})
+        const {electionId,winner,date,status}=req.body;
+        const data=await new ResultSchema({election_id:electionId,winner,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -16,8 +16,8 @@ const Insert=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await ResultSchema.find();
-        console.log(data,"view all candidates")
+        const data=await ResultSchema.find().populate("election_id");
+        // console.log(data,"view all candidates")
         res.json(data)
     }
     catch(err){
@@ -28,7 +28,7 @@ const View=async(req,res)=>{
 
 const SingleView=async(req,res)=>{
     try{
-        let data=await ResultSchema.findById(req.params.id)
+        let data=await ResultSchema.findById(req.params.id).populate("election_id")
         if(!data){
             console.log("data not found with this id")
             return res.status(404).send("Data doesn't exist with this id")

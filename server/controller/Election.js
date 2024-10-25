@@ -67,9 +67,10 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {electionName,description,startDate,endDate,batch,date,status}=req.body
+    const {election_id,electionName,description,startDate,endDate,batch,date,status}=req.body
     try{
         const newData={}
+        if(election_id){newData.election_id=election_id}
         if(electionName){newData.electionName=electionName}
         if(description){newData.description=description}
         if(startDate){newData.startDate=startDate}
