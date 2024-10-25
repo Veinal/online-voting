@@ -154,6 +154,16 @@ export default function ElectionDetails() {
     }
     console.log(election)
 
+    const handleMultipleSelectChange = (event) => {
+      const {
+          target: { value },
+      } = event;
+      setElection({
+          ...election,
+          candidates: typeof value === 'string' ? value.split(',') : value,
+      });
+    };
+
     const HandleSubmit=async(e)=>{
         e.preventDefault();
 
@@ -227,6 +237,9 @@ export default function ElectionDetails() {
                           End date
                       </th>
                       <th scope="col" className="px-6 py-3">
+                          status
+                      </th>
+                      <th scope="col" className="px-6 py-3">
                           Action
                       </th>
                   </tr>
@@ -251,6 +264,9 @@ export default function ElectionDetails() {
                       </td>
                       <td className="px-6 py-4">
                         {row.endDate ? new Date(row.endDate).toLocaleDateString('en-CA') : 'N/A'}
+                      </td>
+                      <td className="px-6 py-4">
+                        {row?.status}
                       </td>
                       <td className="px-6 py-4">
                             <Tooltip title="edit">
@@ -401,13 +417,41 @@ export default function ElectionDetails() {
             <label className="block text-sm font-medium mb-2" htmlFor="choose-candidate">
                 Choose Candidates
             </label>
-            <select name="candidates" id="choose-candidate" multiple size={3} onChange={(e)=>HandleChange(e)} className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
-              <option value=" " className='text-gray-500'>choose the candidates</option>
-              {getCand?.map((row)=>(
-                <option key={row?._id} value={row?._id}>{row?.user_id?.userName}</option>
-              ))}
-            </select>
-          </div>
+            
+          <FormControl fullWidth>
+            {/* <InputLabel id="candidates-label">Choose Candidates</InputLabel> */}
+            <Select
+                labelId="candidates-label"
+                id="candidates"
+                multiple
+                value={election.candidates || []}
+                onChange={handleMultipleSelectChange}
+                sx={{color:'white',height:'45px',border:'1px solid grey'}}
+                inputProps={{
+                    'aria-label': 'Without label',
+                }}
+                renderValue={(selected) => 
+                  selected
+                      .map((id) => getCand.find((candidate) => candidate._id === id)?.user_id?.userName)
+                      .join(', ')
+                }
+                MenuProps={{
+                    PaperProps: {
+                        style: {
+                            maxHeight: 48 * 4.5 + 8,
+                            width: 250,
+                        },
+                    },
+                }}
+            >
+                {getCand.map((candidate) => (
+                    <MenuItem key={candidate?._id} value={candidate?._id}>
+                        {candidate?.user_id?.userName}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+        </div>
           
           <button
             type="submit"

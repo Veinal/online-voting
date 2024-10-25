@@ -16,7 +16,12 @@ const Insert=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await ElectionSchema.find().populate("candidate_id");
+        const data=await ElectionSchema.find().populate({
+            path: 'candidate_id', // Populate the candidates
+            populate: {
+              path: 'user_id', // Populate the user details within each candidate
+            }
+          });
         // console.log(data,"view all candidates")
         res.json(data)
     }
