@@ -2,8 +2,10 @@ const mongoose=require('mongoose')
 const {Schema}=mongoose
 
 const ResultSchema=new Schema({
-    // election_id:{}
-    // candidate_id:{}
+    election_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Elections"
+    },
     winner:{
         type:String
     },

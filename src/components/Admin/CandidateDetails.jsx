@@ -258,7 +258,9 @@ export default function CandidateDetails() {
                           {row?.user_id?.userName}
                       </th>
                       <td className="px-6 py-4">
-                          {row?.manifesto ? `${row.manifesto.split(' ').slice(0, 5).join(' ')}...` : 'N/A'}
+                        {row?.manifesto >10
+                          ? `${row.manifesto.substring(0, 10)}...` 
+                          : row?.manifesto || 'N/A'}
                       </td>
                       <td className="px-6 py-4">
                           {row?.user_id?.role}

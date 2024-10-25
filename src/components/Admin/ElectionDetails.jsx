@@ -22,7 +22,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { blue } from '@mui/material/colors';
-
+import CloseIcon from '@mui/icons-material/Close';
+import e from 'cors';
 
 
 const style = {
@@ -77,10 +78,24 @@ const style4 = {
   p: 2,
 };
 
+// end the election styles
+const style5 = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width:600,
+  height:150,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 2,
+};
+
 
 export default function ElectionDetails() {
     //state for the election form
-    const [election,setElection]=useState({startDate:''})
+    const [election,setElection]=useState({startDate:'',status:'pending'})
     //state to get the election details
     const [getElec,setGetElec]=useState([])
     const navigate=useNavigate()
@@ -121,6 +136,15 @@ export default function ElectionDetails() {
     } 
     const handleClose4 = () => setOpen4(false);
 
+    //end the election
+    const [open5, setOpen5] = React.useState(false);
+    const handleOpen5 = (row) => {
+      setOpen5(true);
+      setSelectedElect(row)
+    } 
+    const handleClose5 = () => setOpen5(false);
+
+
     useEffect(()=>{
         axios.get('http://localhost:7000/api/election/view')
         .then((res)=>{
@@ -133,7 +157,7 @@ export default function ElectionDetails() {
     },[count])
 
     useEffect(()=>{
-      axios.get('http:///localhost:7000/api/candidate/view')
+      axios.get('http://localhost:7000/api/candidate/view')
       .then((res)=>{
         console.log(res.data,"for candidates")
         setGetCand(res.data)
@@ -183,6 +207,28 @@ export default function ElectionDetails() {
       .then((res)=>{
         console.log(res.data)
         handleClose4()
+        setCount((prev)=>!prev)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+    }
+
+    const HandleResultSubmit=async(e)=>{
+      e.preventDefault()
+
+      axios.post('http://localhost:7000/api/result/insert',{electionId:selectedElect._id})
+      .then((res)=>{
+        console.log(res.data)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+
+      await axios.put(`http://localhost:7000/api/election/update/${selectedElect._id}`,{status:'closed'})
+      .then((res)=>{
+        console.log(res.data)
+        handleClose5()
         setCount((prev)=>!prev)
       })
       .catch((err)=>{
@@ -246,7 +292,7 @@ export default function ElectionDetails() {
               </thead>
               <tbody>
                 {getElec?.map((row)=>(
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr key={row?._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                           <div className="flex items-center">
                               <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -257,8 +303,11 @@ export default function ElectionDetails() {
                           {row.electionName || 'N/A'}
                       </th>
                       <td className="px-6 py-4">
-                        {row.description ? `${row.description.split(' ').slice(0, 5).join(' ')}...` : 'N/A'}
+                        {row.description.length > 10 
+                          ? `${row.description.substring(0, 10)}...` 
+                          : row.description || 'N/A'}
                       </td>
+
                       <td className="px-6 py-4">
                         {row.startDate ? new Date(row.startDate).toLocaleDateString('en-CA') : 'N/A'}
                       </td>
@@ -284,12 +333,13 @@ export default function ElectionDetails() {
                                   <DeleteIcon />
                               </IconButton>
                             </Tooltip>
-                            {/* <Tooltip title="Add candidate">
+                            {row?.status !== 'closed' &&
+                            <Tooltip title="end election">
                               <IconButton onClick={()=>handleOpen5(row)} aria-label="delete" color='inherit'>
-                                  <PersonAddIcon />
+                                  <CloseIcon />
                               </IconButton>
-                            </Tooltip> */}
-                            
+                            </Tooltip>
+                            }
                       </td>
                   </tr>
                   ))}
@@ -504,6 +554,27 @@ export default function ElectionDetails() {
               cancel
             </Button>
             <Button onClick={HandleDelete} variant="contained" color="error">
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
+    {/* delete modal */}
+
+    <Modal
+        open={open5}
+        onClose={handleClose5}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style5}>
+          <h1 className='font-semibold text-2xl'>Do you want to End {selectedElect.electionName}?</h1>
+          <div className='flex justify-end gap-4 mt-7'>
+            <Button onClick={handleClose5} variant="contained" color="inherit">
+              cancel
+            </Button>
+            <Button onClick={HandleResultSubmit} variant="contained" color="error">
               Confirm
             </Button>
           </div>

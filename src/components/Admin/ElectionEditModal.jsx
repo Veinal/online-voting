@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal'
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
@@ -18,10 +19,26 @@ const style = {
   p: 4,
 };
 
+// const style2 = {
+//   position: 'absolute',
+//   top: '50%',
+//   left: '50%',
+//   transform: 'translate(-50%, -50%)',
+//   width: 750,
+//   bgcolor: '#1F2937',
+//   border: '2px solid #000',
+//   boxShadow: 24,
+//   p: 4,
+// };
+
 export default function ElectionEditModal(props) {
 
   const [getElection,setGetElection]=useState([])
   const navigate=useNavigate()
+
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
   
 
   useEffect(()=>{
@@ -56,7 +73,7 @@ export default function ElectionEditModal(props) {
   const HandleSubmit=async(e)=>{
     e.preventDefault();
 
-    axios.put(`http://localhost:7000/api/election/update/${props.selectedElect._id}`,getElection)
+    await axios.put(`http://localhost:7000/api/election/update/${props.selectedElect._id}`,getElection)
     .then((res)=>{
       console.log(res.data,'res')
       props.setCount((prev)=>!prev)
@@ -64,6 +81,18 @@ export default function ElectionEditModal(props) {
     })
     .catch((err)=>{
       console.log(err)
+    })
+  }
+
+  const handleResultSubmit=async(e)=>{
+    e.preventDefault()
+
+    axios.post('http://localhost:7000/api/result/insert',{electionId:props.selectedElect._id})
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      alert(err)
     })
   }
 
@@ -146,6 +175,17 @@ export default function ElectionEditModal(props) {
               <option value="teacher">Teachers</option>
             </select>
           </div>
+
+          <div className='mb-4'>
+            <label className="block text-sm font-medium mb-2" htmlFor="change-status">
+                Change status
+            </label>
+            <select name="status" id="change-status" value={getElection?.status} onChange={(e)=>HandleChange(e)} className="block w-full p-2 border border-gray-600 rounded bg-gray-800 text-white">
+              <option value="pending">pending</option>
+              <option value="ongoing">ongoing</option>
+              <option value="closed">closed</option>
+            </select>
+          </div>
           
           <button
             type="submit"
@@ -155,6 +195,25 @@ export default function ElectionEditModal(props) {
           </button>
         </form>
       </Box>
+
+      {/* confirm election end */}
+
+      {/* <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Do you want to end this election?
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Button color='inherit' onClick={handleClose}>Cancel</Button>
+            <Button color='success' onClick={handleResultSubmit}>Confirm</Button>
+          </Typography>
+        </Box>
+      </Modal> */}
     </div>
   )
 }

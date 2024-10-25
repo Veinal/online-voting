@@ -65,7 +65,7 @@ const Update=async(req,res)=>{
     const {user_id,manifesto,voteCount,date,status}=req.body
     try{
         const newData={}
-        if(user_id){newData.user_id=user_id}
+        // if(user_id){newData.user_id=user_id}
         if(manifesto){newData.manifesto=manifesto}
         if(voteCount){newData.voteCount=voteCount}
         if(date){newData.date=date}
