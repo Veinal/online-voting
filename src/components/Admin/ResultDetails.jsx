@@ -7,10 +7,83 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import ResultViewModal from './ResultViewModal';
+
+// view modal
+const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
+  
+  // edit modal
+  const style3 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  
+  // delete modal
+  const style4 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width:600,
+    height:150,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
 
 export default function ResultDetails() {
 
     const [getResult,setGetResult]=useState([])
+    const [selectedResult,setSelectedResult]=useState('')
+    const [count,setCount]=useState(0)
+
+    //view modal states
+    const [open2, setOpen2] = React.useState(false);
+    const handleOpen2 = (row) => {
+      setOpen2(true);
+      setSelectedResult(row)
+      console.log(selectedResult,'selected election')
+    }
+    const handleClose2 = () => setOpen2(false);
+
+    // //edit modal states
+    // const [open3, setOpen3] = React.useState(false);
+    // const handleOpen3 = (row) => {
+    //   setOpen3(true);
+    //   setSelectedResult(row)
+    // }
+    // const handleClose3 = () => setOpen3(false);
+
+    //delete modal states
+    const [open4, setOpen4] = React.useState(false);
+    const handleOpen4 = (row) => {
+      setOpen4(true);
+      setSelectedResult(row)
+    } 
+    const handleClose4 = () => setOpen4(false);
+
 
     useEffect(()=>{
         axios.get('http://localhost:7000/api/result/view')
@@ -21,7 +94,21 @@ export default function ResultDetails() {
         .catch((err)=>{
             alert(err)
         })
-    },[])
+    },[count])
+
+    const HandleDelete=async(e)=>{
+        e.preventDefault()
+
+        axios.delete(`http://localhost:7000/api/result/delete/${selectedResult._id}`)
+        .then((res)=>{
+            console.log(res.data)
+            setCount((prev)=>!prev)
+            handleClose4()
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    }
 
   return (
     <div className='bg-gray-900 h-screen'>
@@ -135,10 +222,10 @@ export default function ResultDetails() {
                             {/* <IconButton aria-label="edit" color='inherit'>
                                 <EditIcon />
                             </IconButton> */}
-                            <IconButton aria-label="view" color='inherit'>
+                            <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
                                 <VisibilityIcon />
                             </IconButton>
-                            <IconButton aria-label="delete" color='inherit'>
+                            <IconButton onClick={()=>handleOpen4(row)} aria-label="delete" color='inherit'>
                                 <DeleteIcon />
                             </IconButton>
                       </td>
@@ -180,6 +267,54 @@ export default function ResultDetails() {
 
 
       </div>
+
+      {/* view modal */}
+
+    <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style2}>
+          <ResultViewModal selectedResult={selectedResult} handleClose2={handleClose2}/>
+        </Box>
+      </Modal>             
+
+    {/* edit modal */}
+
+    {/* <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <ElectionEditModal selectedElect={selectedElect} handleClose3={handleClose3} setCount={setCount}/>
+        </Box>
+      </Modal>  */}
+
+    {/* delete modal */}
+
+    <Modal
+        open={open4}
+        onClose={handleClose4}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style4}>
+          <h1 className='font-semibold text-2xl'>Do you want to delete this data?</h1>
+          <div className='flex justify-end gap-4 mt-7'>
+            <Button onClick={handleClose4} variant="contained" color="inherit">
+              cancel
+            </Button>
+            <Button onClick={HandleDelete} variant="contained" color="error">
+              Confirm
+            </Button>
+          </div>
+        </Box>
+      </Modal>
+
     </div>
   )
 }

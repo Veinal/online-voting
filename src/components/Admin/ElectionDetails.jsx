@@ -560,7 +560,7 @@ export default function ElectionDetails() {
         </Box>
       </Modal>
 
-    {/* delete modal */}
+    {/* result submit modal */}
 
     <Modal
         open={open5}
