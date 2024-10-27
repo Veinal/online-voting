@@ -48,7 +48,7 @@ export default function SignIn() {
     
     axios.post('http://localhost:7000/api/userreg/login',signInState)
     .then((res)=>{
-      if(res.data.success==true){
+      if(res.data.success===true){
         console.log("login successful")
         console.log(res.data)
         const auth=res.data.authtoken

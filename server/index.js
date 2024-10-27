@@ -12,6 +12,7 @@ app.use('/api/election',require('./router/ElectionRouter'))
 app.use('/api/feedback',require('./router/FeedbackRouter'))
 app.use('/api/result',require('./router/ResultsRouter'))
 app.use('/api/userreg',require('./router/UserRouter'))
+app.use('/api/votes',require('./router/VotesRouter'))
 
 const port=7000;
 app.listen(port,()=>{

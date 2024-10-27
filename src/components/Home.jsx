@@ -5,6 +5,10 @@ import Footer from './Footer'
 import {Link} from 'react-router-dom'
 
 export default function Home() {
+
+    const user=JSON.parse(localStorage.getItem("UserToken"))
+    console.log(user,'user')
+
   return (
     <div>
         <div className="flex flex-col min-h-[100dvh]">
@@ -24,15 +28,27 @@ export default function Home() {
                     </p>
                     </div>
                     <div>
+                    {user ? 
+                    <Link to='/vote'>
+                        <a
+                            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-700 hover:text-white"
+                            href="#"
+                            rel="ugc"
+                        >
+                            Vote now
+                        </a>
+                    </Link>
+                    :
                     <Link to='/signin'>
                         <a
-                            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-700 hover:text-white"
                             href="#"
                             rel="ugc"
                         >
                             Sign Up
                         </a>
                     </Link>
+                    }
                     </div>
                 </div>
                 <img
