@@ -37,11 +37,10 @@ export default function Home() {
                 </div>
                 <img
                     src={VotingImg}
-                    width="550"
-                    height="310"
                     alt="Hero"
-                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+                    className="w-full max-w-[500px] mx-auto rounded-xl object-cover object-center lg:order-last"
                 />
+
                 </div>
             </div>
             </section>
@@ -152,193 +151,51 @@ export default function Home() {
                 </div>
             </div>
             </section>
-            <section className="w-full py-12 md:py-24 lg:py-32">
+            <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
-                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">FAQ</div>
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Frequently Asked Questions</h2>
+                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Process</div>
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How It Works</h2>
                     <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                    Find answers to the most common questions about our secure online voting system.
+                    Experience a simple, secure, and transparent online voting process in just a few steps.
                     </p>
                 </div>
                 </div>
-                <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-                <div className="flex flex-col justify-center space-y-4">
-                    <div className="rounded-lg bg-background p-6 shadow" data-orientation="vertical">
-                    <div data-state="closed" data-orientation="vertical" className="border-b">
-                        <h3 data-orientation="vertical" data-state="closed" className="flex">
-                        <button
-                            type="button"
-                            aria-controls="radix-:r9:"
-                            aria-expanded="false"
-                            data-state="closed"
-                            data-orientation="vertical"
-                            id="radix-:r8:"
-                            className="flex flex-1 items-center justify-between py-4 transition-all hover:underline [&amp;[data-state=open]>svg]:rotate-180 text-lg font-medium"
-                            data-radix-collection-item=""
-                        >
-                            How does the authentication process work?
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
-                            >
-                            <path d="m6 9 6 6 6-6"></path>
-                            </svg>
-                        </button>
-                        </h3>
-                        <div
-                        data-state="closed"
-                        id="radix-:r9:"
-                        hidden=""
-                        role="region"
-                        aria-labelledby="radix-:r8:"
-                        data-orientation="vertical"
-                        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
-                        ></div>
+                <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+                <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="bg-primary p-6 rounded-full">
+                    <img src="/path/to/your/authentication-icon.svg" alt="Authentication" className="w-12 h-12" />
                     </div>
-                    </div>
-                    <div className="rounded-lg bg-background p-6 shadow" data-orientation="vertical">
-                    <div data-state="closed" data-orientation="vertical" className="border-b">
-                        <h3 data-orientation="vertical" data-state="closed" className="flex">
-                        <button
-                            type="button"
-                            aria-controls="radix-:rb:"
-                            aria-expanded="false"
-                            data-state="closed"
-                            data-orientation="vertical"
-                            id="radix-:ra:"
-                            className="flex flex-1 items-center justify-between py-4 transition-all hover:underline [&amp;[data-state=open]>svg]:rotate-180 text-lg font-medium"
-                            data-radix-collection-item=""
-                        >
-                            How can I track the election results?
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
-                            >
-                            <path d="m6 9 6 6 6-6"></path>
-                            </svg>
-                        </button>
-                        </h3>
-                        <div
-                        data-state="closed"
-                        id="radix-:rb:"
-                        hidden=""
-                        role="region"
-                        aria-labelledby="radix-:ra:"
-                        data-orientation="vertical"
-                        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
-                        ></div>
-                    </div>
-                    </div>
+                    <h3 className="text-xl font-bold">1. Authenticate</h3>
+                    <p className="text-muted-foreground">
+                    Use secure login credentials to access the voting platform, ensuring only eligible voters can participate.
+                    </p>
                 </div>
-                <div className="flex flex-col justify-center space-y-4">
-                    <div className="rounded-lg bg-background p-6 shadow" data-orientation="vertical">
-                    <div data-state="closed" data-orientation="vertical" className="border-b">
-                        <h3 data-orientation="vertical" data-state="closed" className="flex">
-                        <button
-                            type="button"
-                            aria-controls="radix-:rd:"
-                            aria-expanded="false"
-                            data-state="closed"
-                            data-orientation="vertical"
-                            id="radix-:rc:"
-                            className="flex flex-1 items-center justify-between py-4 transition-all hover:underline [&amp;[data-state=open]>svg]:rotate-180 text-lg font-medium"
-                            data-radix-collection-item=""
-                        >
-                            What accessibility features are available?
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
-                            >
-                            <path d="m6 9 6 6 6-6"></path>
-                            </svg>
-                        </button>
-                        </h3>
-                        <div
-                        data-state="closed"
-                        id="radix-:rd:"
-                        hidden=""
-                        role="region"
-                        aria-labelledby="radix-:rc:"
-                        data-orientation="vertical"
-                        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
-                        ></div>
+                
+                <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="bg-primary p-6 rounded-full">
+                    <img src="/path/to/your/vote-icon.svg" alt="Vote" className="w-12 h-12" />
                     </div>
+                    <h3 className="text-xl font-bold">2. Cast Your Vote</h3>
+                    <p className="text-muted-foreground">
+                    Select your preferred candidate and submit your vote with confidence in a secure environment.
+                    </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center space-y-4">
+                    <div className="bg-primary p-6 rounded-full">
+                    <img src="/path/to/your/results-icon.svg" alt="Results" className="w-12 h-12" />
                     </div>
-                    <div className="rounded-lg bg-background p-6 shadow" data-orientation="vertical">
-                    <div data-state="closed" data-orientation="vertical" className="border-b">
-                        <h3 data-orientation="vertical" data-state="closed" className="flex">
-                        <button
-                            type="button"
-                            aria-controls="radix-:rf:"
-                            aria-expanded="false"
-                            data-state="closed"
-                            data-orientation="vertical"
-                            id="radix-:re:"
-                            className="flex flex-1 items-center justify-between py-4 transition-all hover:underline [&amp;[data-state=open]>svg]:rotate-180 text-lg font-medium"
-                            data-radix-collection-item=""
-                        >
-                            How is my privacy and data security protected?
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            className="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
-                            >
-                            <path d="m6 9 6 6 6-6"></path>
-                            </svg>
-                        </button>
-                        </h3>
-                        <div
-                        data-state="closed"
-                        id="radix-:rf:"
-                        hidden=""
-                        role="region"
-                        aria-labelledby="radix-:re:"
-                        data-orientation="vertical"
-                        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                        style={{'--radix-accordion-content-height': 'var(--radix-collapsible-content-height)', '--radix-accordion-content-width': 'var(--radix-collapsible-content-width)'}}
-                        ></div>
-                    </div>
-                    </div>
+                    <h3 className="text-xl font-bold">3. View Results</h3>
+                    <p className="text-muted-foreground">
+                    Check the results in real-time as votes are tallied transparently, ensuring accountability and trust.
+                    </p>
                 </div>
                 </div>
             </div>
             </section>
+
         </main>
 
         <Footer/>

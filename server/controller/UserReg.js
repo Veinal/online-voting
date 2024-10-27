@@ -8,7 +8,10 @@ const Register = async(req,res)=>{
         const {userName,email,password,phone,age,role,date,status}=req.body;
         // picture
 
-        const data = await new UserSchema({userName,email,password,phone,age,role,date,status})
+        const salt=await bcrypt.genSalt(10)
+        const secpass=await bcrypt.hash(password,salt)
+
+        const data = await new UserSchema({userName,email,password:secpass,phone,age,role,date,status})
         const savedData=data.save()
         console.log("User Registration successful")
         res.send({"Registration successful":true,savedData})
@@ -22,16 +25,23 @@ const Register = async(req,res)=>{
 const Login=async(req,res)=>{
     const {email,password}=req.body
     try{
-        const user =await UserSchema.findOne({email})
+        let user =await UserSchema.findOne({email})
         // console.log(user,"user")
         if(!user){
             return res.json({error:"Invalid user email address"})
         }
-        //password
+        
+        const passwordCompare=await bcrypt.compare(password,user.password)
+        if(!passwordCompare){
+            const success=false;
+            return res.json({success,error:"Invalid credential password"})
+        }
 
         const data=user.id;
         console.log(data)
-        console.log("login successful")
+        const authtoken=jwt.sign(data,JWT_SECRET)
+        const success =true;
+        res.json({success,authtoken,user})
     }
     catch(err){
         console.error("some error occurred"+err)

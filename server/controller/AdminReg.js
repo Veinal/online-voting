@@ -7,7 +7,10 @@ const Register = async (req, res) => {
     try {
         const { adminName, adminEmail, adminPassword, date, status } = req.body;
 
-        const data = await new AdminSchema({ adminName, adminEmail, adminPassword, date, status })
+        const salt=await bcrypt.genSalt(10)
+        const secpass=await bcrypt.hash(adminPassword,salt)
+
+        const data = await new AdminSchema({ adminName, adminEmail, adminPassword:secpass, date, status })
         const savedData = await data.save()
         console.log("Admin Registration sucess")
         res.send({ "Registration successful": true, savedData })
@@ -26,12 +29,19 @@ const Login = async(req,res)=>{
         if(!admin){
             return res.json({error:"Invalid credential email"})
         }
-        // password
+
+        const passwordCompare=await bcrypt.compare(adminPassword,admin.adminPassword)
+        if(!passwordCompare){
+            const success =false;
+            return res.json({success,error:"Invalid password credential"})
+        }
 
         const data=admin.id;
         console.log(admin.id)
-        console.log("login success")
-        res.json({"Login successful":true,data})
+        const admintoken=jwt.sign(data,JWT_SECRET)
+        const success=true;
+        console.log({success,admintoken,admin})
+        res.json({success,admintoken,admin})
     }
     catch(err){
         console.error("some error occured!!"+err)

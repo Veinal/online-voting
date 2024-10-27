@@ -43,18 +43,27 @@ export default function SignIn() {
   }
   console.log(signInState,'signInState')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     
     axios.post('http://localhost:7000/api/userreg/login',signInState)
     .then((res)=>{
-      console.log(res.data)
+      if(res.data.success==true){
+        console.log("login successful")
+        console.log(res.data)
+        const auth=res.data.authtoken
+        localStorage.setItem("UserToken",JSON.stringify(auth))
+        localStorage.setItem("User",JSON.stringify(res.data.user))
+        navigate('/')
+      }
+      else{
+        console.log(res.data.error)
+        alert("Invalid email or password!!!")
+      }
     })
     .catch((err)=>{
       console.log(err)
     })
-
-    // await
   };
 
   return (
@@ -132,7 +141,7 @@ export default function SignIn() {
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item>
+                <Grid item xs>
                   <Link to='/signup' className='text-blue-700' variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
