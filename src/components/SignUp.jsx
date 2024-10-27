@@ -16,6 +16,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import signUpImg from '../signUpImg.jpg'
 import { useState } from 'react';
 import Axios from 'axios';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
 
 function Copyright(props) {
   return (
@@ -53,8 +56,6 @@ export default function Sign() {
     }).catch((err)=>{
       console.log(err)
     })
-
-    
   };
 
   return (
@@ -156,20 +157,22 @@ export default function Sign() {
                 autoComplete="picture"
                 onChange={(e)=>HandleChange(e)}
               />
-              <TextField
-                margin="normal"
-                required
+              
+              <Select
                 fullWidth
-                id="role"
-                label="Role"
                 name="role"
-                autoComplete="role"
-                onChange={(e)=>HandleChange(e)}
-              />
-              {/* <FormControlLabel
-                control={<Checkbox onChange="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+                value={signUpState?.role || ''}
+                onChange={HandleChange}
+                displayEmpty
+                sx={{ mt: 2 }}
+              >
+                <MenuItem value="" disabled>
+                  Choose a role
+                </MenuItem>
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="teacher">Teacher</MenuItem>
+              </Select>
+
               <Button
                 type="submit"
                 fullWidth
@@ -185,7 +188,7 @@ export default function Sign() {
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item>
+                <Grid item xs>
                   <Link to='/signin' className='text-blue-700' variant="body2">
                     {"Already have an account? Sign In"}
                   </Link>
