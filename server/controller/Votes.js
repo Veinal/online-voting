@@ -1,9 +1,9 @@
-const FeedbackSchema = require('../model/FeedbackSchema');
+const VotesSchema = require('../model/VotesSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {feedback,date,status}=req.body;
-        const data=await new FeedBackSchema({feedback,date,status})
+        const {electionID,userID,date,status}=req.body;
+        const data=await new VotesSchema({election_id:electionID,user_id:userID,date,status})
         const savedData=data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -16,8 +16,7 @@ const Insert=async(req,res)=>{
 
 const View=async(req,res)=>{
     try{
-        const data=await FeedBackSchema.find();
-        // console.log(data,"view all candidates")
+        const data=await VotesSchema.find();
         res.json(data)
     }
     catch(err){
@@ -28,7 +27,7 @@ const View=async(req,res)=>{
 
 const SingleView=async(req,res)=>{
     try{
-        let data=await FeedBackSchema.findById(req.params.id)
+        let data=await VotesSchema.findById(req.params.id)
         if(!data){
             console.log("data not found with this id")
             return res.status(404).send("Data doesn't exist with this id")
@@ -45,12 +44,12 @@ const SingleView=async(req,res)=>{
 
 const Delete=async(req,res)=>{
     try{
-        let data=await FeedBackSchema.findById(req.params.id);
+        let data=await VotesSchema.findById(req.params.id);
         if(!data){
             console.log("Data not found with this id")
             return res.status(404).send("Data doesn't exist with this id")
         }else{
-            data=await FeedBackSchema.findByIdAndDelete(req.params.id);
+            data=await VotesSchema.findByIdAndDelete(req.params.id);
             console.log("Data deleted successfully")
             res.json({"Deletion success":true,"Deleted data":data})
         }
@@ -62,19 +61,20 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {feedback,date,status}=req.body
+    const {election_id,user_id,date,status}=req.body
     try{
         const newData={}
-        if(feedback){newData.feedback=feedback}
+        if(election_id){newData.election_id=election_id}
+        if(user_id){newData.user_id=user_id}
         if(date){newData.date=date}
         if(status){newData.status=status}
 
-        let data=await FeedbackSchema.findById(req.params.id)
+        let data=await VotesSchema.findById(req.params.id)
         if(!data){
             console.log("Data not found with this Id")
             return res.status(404).send("Data doesn't exist with this Id")
         }else{
-            data=await FeedbackSchema.findByIdAndUpdate(req.params.id,{$set:newData})
+            data=await VotesSchema.findByIdAndUpdate(req.params.id,{$set:newData})
             res.json({data})
         }
     }
