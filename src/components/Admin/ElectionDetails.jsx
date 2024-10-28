@@ -214,27 +214,34 @@ export default function ElectionDetails() {
       })
     }
 
-    const HandleResultSubmit=async(e)=>{
-      e.preventDefault()
-
-      axios.post('http://localhost:7000/api/result/insert',{electionId:selectedElect._id})
-      .then((res)=>{
-        console.log(res.data)
-      })
-      .catch((err)=>{
-        alert(err)
-      })
-
-      await axios.put(`http://localhost:7000/api/election/update/${selectedElect._id}`,{status:'closed'})
-      .then((res)=>{
-        console.log(res.data)
-        handleClose5()
-        setCount((prev)=>!prev)
-      })
-      .catch((err)=>{
-        alert(err)
-      })
-    }
+    const HandleResultSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+          const insertResponse = await axios.post('http://localhost:7000/api/result/insert', {
+              electionId: selectedElect._id
+          });
+  
+          if (!insertResponse.data.success) {
+              alert(insertResponse.data.message);  // Show the error message
+              return;  // Exit if the insertion failed
+          }
+  
+          // If insertion is successful, update the election status
+          const updateResponse = await axios.put(`http://localhost:7000/api/election/update/${selectedElect._id}`, {
+              status: 'closed'
+          });
+  
+          console.log(updateResponse.data);
+          handleClose5();
+          setCount((prev) => !prev);
+          
+      } catch (err) {
+          alert(err.response ? err.response.data.message : "An unexpected error occurred.");
+      }
+  };
+  
+  
 
   return (
     <div className='bg-gray-900  min-h-screen'>

@@ -1,4 +1,4 @@
-const FeedbackSchema = require('../model/FeedbackSchema');
+const FeedBackSchema = require('../model/FeedbackSchema');
 
 const Insert=async(req,res)=>{
     try{
