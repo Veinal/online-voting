@@ -76,6 +76,9 @@ export default function ElectionEditModal(props) {
     await axios.put(`http://localhost:7000/api/election/update/${props.selectedElect._id}`,getElection)
     .then((res)=>{
       console.log(res.data,'res')
+      if(getElection?.status!='closed'){
+        
+      }
       props.setCount((prev)=>!prev)
       navigate(props.handleClose3())
     })
