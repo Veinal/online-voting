@@ -4,7 +4,7 @@ const Insert=async(req,res)=>{
     try{
         const {candidates,electionName,description,startDate,endDate,batch,date,status}=req.body;
         const data=await new ElectionSchema({candidate_id:candidates,electionName,description,startDate,endDate,batch,date,status})
-        const savedData=data.save()
+        const savedData=await data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
     }

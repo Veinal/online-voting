@@ -10,6 +10,10 @@ const VotesSchema=new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"UserDetails"
     },
+    candidate_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Candidates"
+    },
     date:{
         type:Date,
         default:Date.now()

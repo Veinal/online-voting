@@ -14,7 +14,8 @@ const ResultSchema=new Schema({
         default:Date.now()
     },
     status:{
-        type:String
+        type:String,
+        default:"dont display"
     }
 })
 module.exports=mongoose.model("Results",ResultSchema)

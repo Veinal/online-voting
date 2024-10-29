@@ -11,26 +11,68 @@ const candidateColors = [
 
 export default function Vote() {
     const [getElection, setGetElection] = useState([]);
+    const [getResult,setGetResult]=useState([])
     const [feed, setFeed] = useState({});
+    const [hasVoted, setHasVoted] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:7000/api/election/view')
-            .then((res) => {
-                setGetElection(res.data);
-                console.log(res.data);
-            })
-            .catch((err) => {
-                alert(err);
-            });
+        .then((res) => {
+            setGetElection(res.data);
+
+            // Check if user has already voted in this election
+            const userID = JSON.parse(localStorage.getItem("User"))._id;
+            const ongoingElection = res.data.find((item) => item.status === 'ongoing');
+            
+            if (ongoingElection) {
+                axios.get(`http://localhost:7000/api/votes/check`, {
+                    params: { electionID: ongoingElection._id, userID }
+                })
+                .then((response) => {
+                    setHasVoted(response.data.hasVoted);
+                })
+                .catch((err) => console.error("Error checking vote status:", err));
+            }
+        })
+        .catch((err) => {
+            alert(err);
+        });
     }, []);
+
+    useEffect(()=>{
+        axios.get('http://localhost:7000/api/result/view')
+        .then((res)=>{
+            console.log(res.data)
+            setGetResult(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    },[])
 
     const filteredElection = getElection.find((item) => item.status === 'ongoing');
     console.log(filteredElection, 'filtered election');
+
+    const userID = JSON.parse(localStorage.getItem("User"))
+    console.log(userID._id,"userID")
 
     const handlechange = (e) => {
         setFeed({ ...feed, [e.target.name]: e.target.value });
     };
     console.log(feed, "feed");
+    
+    
+    const HandleVoteSubmit=(row)=>{  //row is the parameter passed(candidateID)
+        const candidateID=row._id
+        // console.log(candidateID,'cid')
+        axios.post('http://localhost:7000/api/votes/insert',{electionID:filteredElection._id,candidateID:candidateID,userID:userID})
+        .then((res)=>{
+            console.log(res.data)
+        })
+        .catch((err)=>{
+            alert(err)
+        })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,30 +93,35 @@ export default function Vote() {
             </header>
 
             <main className="flex-1 py-10 px-6 md:px-10 lg:px-16">
-                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {/* Render Candidates using map */}
-                    {filteredElection?.candidate_id?.map((row, index) => (
-                        <div key={row._id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                            <div className="flex items-center gap-4">
-                                <img
-                                    src="/placeholder.svg"
-                                    alt={row?.user_id?.userName}
-                                    width="80"
-                                    height="80"
-                                    className="rounded-full border-2"
-                                    style={{ aspectRatio: '80 / 80', objectFit: 'cover' }}
-                                />
-                                <div>
-                                    <h2 className="text-xl font-semibold text-gray-900">{row?.user_id?.userName}</h2>
-                                    <p className="text-sm text-gray-500">Manifesto: {row?.manifesto}</p>
+                {hasVoted ? (
+                    <div className="text-center text-2xl font-semibold text-gray-800 mt-20">
+                        You have already voted in this election.
+                    </div>
+                ) : (
+                    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {filteredElection?.candidate_id?.map((row, index) => (
+                            <div key={row._id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                                <div className="flex items-center gap-4">
+                                    <img
+                                        src="/placeholder.svg"
+                                        alt={row?.user_id?.userName}
+                                        width="80"
+                                        height="80"
+                                        className="rounded-full border-2"
+                                        style={{ aspectRatio: '80 / 80', objectFit: 'cover' }}
+                                    />
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900">{row?.user_id?.userName}</h2>
+                                        <p className="text-sm text-gray-500">Manifesto: {row?.manifesto}</p>
+                                    </div>
                                 </div>
+                                <button onClick={() => HandleVoteSubmit(row)} className={`w-full mt-6 py-3 rounded-lg font-medium text-white hover:opacity-90 transition ${candidateColors[index % candidateColors.length]}`}>
+                                    Vote
+                                </button>
                             </div>
-                            <button className={`w-full mt-6 py-3 rounded-lg font-medium text-white hover:opacity-90 transition ${candidateColors[index % candidateColors.length]}`}>
-                                Vote
-                            </button>
-                        </div>
-                    ))}
-                </section>
+                        ))}
+                    </section>
+                )}
 
                 {/* Vote Tallies Section */}
                 <section className="mt-12">

@@ -75,9 +75,10 @@ const Delete = async (req, res) => {
 }
 
 const Update = async (req, res) => {
-    const { winner, date, status } = req.body
+    const {election_id, winner, date, status } = req.body
     try {
         const newData = {}
+        if (election_id) { newData.election_id = election_id }
         if (winner) { newData.winner = winner }
         if (date) { newData.date = date }
         if (status) { newData.status = status }
