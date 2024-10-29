@@ -136,7 +136,7 @@ export default function CandidateDetails() {
     const HandleSubmit=(e)=>{
         e.preventDefault()
 
-        axios.post('http://localhost:7000/api/candidate/insert',cand)
+        axios.post('http://localhost:7000/api/candidate/insert',{...cand,voteCount:0})
         .then((res)=>{
             console.log(res.data)
             handleClose()

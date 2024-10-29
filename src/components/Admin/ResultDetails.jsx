@@ -36,7 +36,7 @@ const style2 = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    // p: 4,
   };
   
   // delete modal
@@ -58,6 +58,7 @@ export default function ResultDetails() {
     const [getResult,setGetResult]=useState([])
     const [selectedResult,setSelectedResult]=useState('')
     const [count,setCount]=useState(0)
+    const [status,setStatus]=useState('')
 
     //view modal states
     const [open2, setOpen2] = React.useState(false);
@@ -68,13 +69,14 @@ export default function ResultDetails() {
     }
     const handleClose2 = () => setOpen2(false);
 
-    // //edit modal states
-    // const [open3, setOpen3] = React.useState(false);
-    // const handleOpen3 = (row) => {
-    //   setOpen3(true);
-    //   setSelectedResult(row)
-    // }
-    // const handleClose3 = () => setOpen3(false);
+    //edit modal states
+    const [open3, setOpen3] = React.useState(false);
+    const handleOpen3 = (row) => {
+      setOpen3(true);
+      setSelectedResult(row)
+      setStatus(row.status)
+    }
+    const handleClose3 = () => setOpen3(false);
 
     //delete modal states
     const [open4, setOpen4] = React.useState(false);
@@ -96,6 +98,11 @@ export default function ResultDetails() {
         })
     },[count])
 
+    const handleSelectChange=(e)=>{
+      setStatus(e.target.value)
+    }
+    console.log(status,'status')
+
     const HandleDelete=async(e)=>{
         e.preventDefault()
 
@@ -108,6 +115,18 @@ export default function ResultDetails() {
         .catch((err)=>{
             alert(err)
         })
+    }
+
+    const handleStatusSubmit=()=>{
+      axios.put(`http://localhost:7000/api/result/update/${selectedResult._id}`,{status})
+      .then((res)=>{
+        console.log(res.data)
+        setCount((prev)=>!prev)
+        handleClose3()
+      })
+      .catch((err)=>{
+        alert(err)
+      })
     }
 
   return (
@@ -189,9 +208,9 @@ export default function ResultDetails() {
                       <th scope="col" className="px-6 py-3">
                           TOTAL VOTE
                       </th>
-                      {/* <th scope="col" className="px-6 py-3">
-                          Price
-                      </th> */}
+                      <th scope="col" className="px-6 py-3">
+                          STATUS
+                      </th>
                       <th scope="col" className="px-6 py-3">
                           Action
                       </th>
@@ -215,13 +234,13 @@ export default function ResultDetails() {
                       <td className="px-6 py-4">
                           {row?.election_id?.candidate_id?.totalVote}
                       </td>
-                      {/* <td className="px-6 py-4">
-                          $2999
-                      </td> */}
                       <td className="px-6 py-4">
-                            {/* <IconButton aria-label="edit" color='inherit'>
+                          {row?.status}
+                          <IconButton onClick={()=>handleOpen3(row)} aria-label="edit" color='inherit'>
                                 <EditIcon />
-                            </IconButton> */}
+                            </IconButton>
+                      </td>
+                      <td className="px-6 py-4">
                             <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
                                 <VisibilityIcon />
                             </IconButton>
@@ -283,16 +302,38 @@ export default function ResultDetails() {
 
     {/* edit modal */}
 
-    {/* <Modal
+    <Modal
         open={open3}
         onClose={handleClose3}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <ElectionEditModal selectedElect={selectedElect} handleClose3={handleClose3} setCount={setCount}/>
+        <Box sx={style3}>
+        <div className="p-6 bg-gray-800 text-white  shadow-lg">
+          <h2 id="modal-modal-title" className="text-2xl font-semibold mb-4 text-gray-100">Display Options</h2>
+          <p id="modal-modal-description" className="text-gray-400 mb-4">Choose whether to display or not:</p>
+          
+          <select
+            value={status}
+            onChange={(e) => handleSelectChange(e)}
+            name="status"
+            className="w-full p-2 mt-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          >
+            {/* <option value="" className="text-gray-400">Select an option</option> */}
+            <option value="display" className="text-gray-300">Display</option>
+            <option value="dont display" className="text-gray-300">Don't Display</option>
+          </select>
+          
+          <button
+            onClick={handleStatusSubmit} // Assuming a handleSubmit function
+            className="w-full mt-4 p-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            Submit
+          </button>
+        </div>
+
         </Box>
-      </Modal>  */}
+      </Modal> 
 
     {/* delete modal */}
 

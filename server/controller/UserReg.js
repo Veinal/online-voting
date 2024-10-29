@@ -12,7 +12,7 @@ const Register = async(req,res)=>{
         const secpass=await bcrypt.hash(password,salt)
 
         const data = await new UserSchema({userName,email,password:secpass,phone,age,role,date,status})
-        const savedData=data.save()
+        const savedData=await data.save()
         console.log("User Registration successful")
         res.send({"Registration successful":true,savedData})
     }

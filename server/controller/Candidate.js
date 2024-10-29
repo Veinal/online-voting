@@ -4,7 +4,7 @@ const Insert=async(req,res)=>{
     try{
         const {userName,manifesto,voteCount,date,status}=req.body;
         const data=await new CandiSchema({user_id:userName,manifesto,voteCount,date,status})
-        const savedData=data.save()
+        const savedData= await data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
     }
