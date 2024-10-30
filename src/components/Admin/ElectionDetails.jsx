@@ -167,6 +167,9 @@ export default function ElectionDetails() {
       })
     },[])
 
+    //filter the candidates by status
+    const filteredCand=getCand.filter(candidate=>candidate.status === 'active')
+
     //to get the current date for the start date
     const getCurrentDate = () => {
       const today = new Date();
@@ -501,7 +504,7 @@ export default function ElectionDetails() {
                     },
                 }}
             >
-                {getCand.map((candidate) => (
+                {filteredCand.map((candidate) => (
                     <MenuItem key={candidate?._id} value={candidate?._id}>
                         {candidate?.user_id?.userName}
                     </MenuItem>
