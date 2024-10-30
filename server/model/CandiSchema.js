@@ -19,7 +19,8 @@ const CandiSchema=new Schema({
         default:Date.now()
     },
     status:{
-        type:String
+        type:String,
+        default:"active"
     }
 })
 module.exports=mongoose.model("Candidates",CandiSchema)

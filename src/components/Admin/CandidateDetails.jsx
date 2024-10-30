@@ -50,7 +50,7 @@ const style3 = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    // p: 4,
   };
   
   // delete modal
@@ -74,6 +74,7 @@ export default function CandidateDetails() {
     const [getCand,setGetCand]=useState([])
     const [selectedCand,setSelectedCand]=useState('')
     const [count,setCount]=useState(0)
+    const [status,setStatus]=useState('')
 
     //modal states for creating election
     const [open, setOpen] = React.useState(false);
@@ -94,6 +95,7 @@ export default function CandidateDetails() {
     const handleOpen3 = (row) => {
       setOpen3(true);
       setSelectedCand(row)
+      setStatus(row.status)
     }
     const handleClose3 = () => setOpen3(false);
 
@@ -133,7 +135,12 @@ export default function CandidateDetails() {
     }
     // console.log(cand,"cand")
 
-    const HandleSubmit=(e)=>{
+    const handleSelectChange=(e)=>{
+      setStatus(e.target.value)
+    }
+    console.log(status,'status')
+
+    const HandleSubmit=async(e)=>{
         e.preventDefault()
 
         axios.post('http://localhost:7000/api/candidate/insert',{...cand,voteCount:0})
@@ -147,12 +154,24 @@ export default function CandidateDetails() {
         })
     }
 
-    const HandleDelete=()=>{
+    const HandleDelete=async()=>{
       axios.delete(`http://localhost:7000/api/candidate/delete/${selectedCand._id}`)
       .then((res)=>{
         console.log(res.data)
         handleClose4()
         setCount((prev)=>!prev)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+    }
+
+    const handleStatusSubmit=async()=>{
+      axios.put(`http://localhost:7000/api/candidate/update/${selectedCand._id}`,{status})
+      .then((res)=>{
+        console.log(res.data)
+        setCount((prev)=>!prev)
+        handleClose3()
       })
       .catch((err)=>{
         alert(err)
@@ -267,11 +286,12 @@ export default function CandidateDetails() {
                       </td>
                       <td className="px-6 py-4">
                           {row?.status || ''}
+                          <IconButton onClick={()=>handleOpen3(row)} aria-label="edit" color='inherit'>
+                              <EditIcon />
+                          </IconButton>
                       </td>
                       <td className="px-6 py-4">
-                            {/* <IconButton aria-label="edit" color='inherit'>
-                                <EditIcon />
-                            </IconButton> */}
+                            
                             <Tooltip title="view">
                               <IconButton onClick={()=>handleOpen2(row)} aria-label="view" color='inherit'>
                                   <VisibilityIcon />
@@ -395,6 +415,41 @@ export default function CandidateDetails() {
       >
         <Box sx={style2}>
           <CandidateViewModal selectedCand={selectedCand} handleClose2={handleClose2}/>
+        </Box>
+      </Modal> 
+
+      {/* edit modal */}
+
+    <Modal
+        open={open3}
+        onClose={handleClose3}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style3}>
+        <div className="p-6 bg-gray-800 text-white  shadow-lg">
+          <h2 id="modal-modal-title" className="text-2xl font-semibold mb-4 text-gray-100">Display Options</h2>
+          <p id="modal-modal-description" className="text-gray-400 mb-4">Choose whether to display or not:</p>
+          
+          <select
+            value={status}
+            onChange={(e) => handleSelectChange(e)}
+            name="status"
+            className="w-full p-2 mt-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          >
+            {/* <option value="" className="text-gray-400">Select an option</option> */}
+            <option value="active" className="text-gray-300">active</option>
+            <option value="inactive" className="text-gray-300">inactive</option>
+          </select>
+          
+          <button
+            onClick={handleStatusSubmit} // Assuming a handleSubmit function
+            className="w-full mt-4 p-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            Submit
+          </button>
+        </div>
+
         </Box>
       </Modal>  
 

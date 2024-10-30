@@ -56,6 +56,9 @@ export default function Vote() {
     const userID = JSON.parse(localStorage.getItem("User"))
     console.log(userID._id,"userID")
 
+    const filteredResult=getResult.filter(result=>result.status === 'display')
+    console.log(filteredResult,'filteredResult')
+
     const handlechange = (e) => {
         setFeed({ ...feed, [e.target.name]: e.target.value });
     };
@@ -89,7 +92,7 @@ export default function Vote() {
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <header className="bg-blue-900 text-white py-6 px-8 shadow-lg">
-                <h1 className="text-4xl font-extrabold">{filteredElection?.name || "Election"}</h1>
+                <h1 className="text-4xl font-extrabold uppercase">{filteredElection?.electionName || "Election"}</h1>
             </header>
 
             <main className="flex-1 py-10 px-6 md:px-10 lg:px-16">
@@ -124,17 +127,20 @@ export default function Vote() {
                 )}
 
                 {/* Vote Tallies Section */}
-                <section className="mt-12">
-                    <h2 className="text-3xl font-bold mb-6">Vote Tallies</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {filteredElection?.candidate_id?.map((candidate, index) => (
-                            <div key={candidate._id} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                                <h3 className="text-xl font-semibold text-gray-900">{candidate?.user_id?.userName}</h3>
-                                <p className={`text-5xl font-bold ${candidateColors[index % candidateColors.length]}`}>{candidate.votes || 0}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                {filteredResult.length > 0 && (
+                    <section className="mt-12">
+                        <h2 className="text-3xl font-bold mb-6">Vote Tallies</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {filteredElection?.candidate_id?.map((candidate, index) => (
+                                <div key={candidate._id} className="bg-white p-6 rounded-lg shadow-lg text-center">
+                                    <h3 className="text-xl font-semibold text-gray-900">{candidate?.user_id?.userName}</h3>
+                                    <p className={`text-5xl font-bold ${candidateColors[index % candidateColors.length]}`}>{candidate.votes || 0}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
             </main>
 
             {/* Feedback Section */}
