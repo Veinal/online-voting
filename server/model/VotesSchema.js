@@ -6,13 +6,12 @@ const VotesSchema=new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Elections"
     },
-    user_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"UserDetails"
-    },
     candidate_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Candidates"
+    },
+    account:{
+        type:String
     },
     date:{
         type:Date,

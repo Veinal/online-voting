@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { initializeWeb3 } from "../services/web3Service";
+import VoteCasting from '../smart-contracts/build/contracts/VoteCasting.json'
 
 // For unique colors for each card
 const candidateColors = [
@@ -18,89 +19,94 @@ export default function Vote() {
 
     const [isWeb3Ready, setIsWeb3Ready] = useState(false);
     const [account, setAccount] = useState(null);
+    const [contract,setContract]=useState(null)
+    const [voteCounts, setVoteCounts] = useState({});
+    const [web3, setWeb3] = useState(null);
 
-    // useEffect(() => {
-    //     const initWeb3 = async () => {
-    //         try {
-    //             const { web3 } = await initializeWeb3();
-    //             const accounts = await web3.eth.getAccounts();
 
-    //             if (accounts.length > 0) {
-    //                 setAccount(accounts[0]);
-    //                 localStorage.setItem('account', accounts[0]); // Store account in local storage
-    //                 setIsWeb3Ready(true);
-    //                 console.log("Web3 and contract initialized!");
-    //             } else {
-    //                 setIsWeb3Ready(false);
-    //             }
-    //         } catch (error) {
-    //             console.error("Failed to initialize Web3:", error);
-    //         }
-    //     };
-
-    //     // Check for existing account in local storage
-    //     const storedAccount = localStorage.getItem('account');
-    //     if (storedAccount) {
-    //         setAccount(storedAccount);
-    //         setIsWeb3Ready(true);
-    //     } else {
-    //         initWeb3();
-    //     }
-    // }, []);
-
-    //to check whether the account is present in the localstorage
     useEffect(() => {
+    const initialize = async () => {
+        // Check if account exists in local storage
         const storedAccount = localStorage.getItem('account');
+        
         if (storedAccount) {
             setAccount(storedAccount);
             setIsWeb3Ready(true);
+            
+            try {
+                // Initialize web3 and get accounts
+                const { web3: web3Instance } = await initializeWeb3();
+                setWeb3(web3Instance); // Set the web3 instance in state
+
+                // Initialize contract
+                const contractAddress = "0xb8290418c6DbD6d185493D581F7b1cA7dAEa37C7";
+                const contractInstance = new web3Instance.eth.Contract(VoteCasting.abi, contractAddress);
+                setContract(contractInstance);
+                console.log("Contract initialized:", contractInstance);
+            } catch (error) {
+                console.error("Error initializing web3 or contract:", error);
+            }
         }
-    }, []);
+    };
+
+    initialize();
+}, []);
+
 
     // Connect to MetaMask using button
     const connectMetaMask = async () => {
         try {
-            const { web3 } = await initializeWeb3();
-            const accounts = await web3.eth.getAccounts();
+            const { web3: web3Instance } = await initializeWeb3();
+            const accounts = await web3Instance.eth.getAccounts();
             if (accounts.length > 0) {
                 setAccount(accounts[0]);
                 localStorage.setItem('account', accounts[0]);
                 setIsWeb3Ready(true);
-                console.log("Wallet connected!");
+                setWeb3(web3Instance); // Store the web3 instance in state
+            } else {
+                console.error("No accounts found. Please connect MetaMask.");
             }
         } catch (error) {
             console.error("Error connecting to MetaMask:", error);
         }
     };
 
+    // Create contract instance whenever web3 or account changes
+    useEffect(() => {
+        if (web3 && account) {
+            const contractAddress = "0xb8290418c6DbD6d185493D581F7b1cA7dAEa37C7";
+            const contractInstance = new web3.eth.Contract(VoteCasting.abi, contractAddress);
+            setContract(contractInstance);
+            console.log("Contract initialized:", contractInstance);
+        }
+    }, [web3, account]);
+
+
     useEffect(() => {
         axios.get('http://localhost:7000/api/election/view')
-        .then((res) => {
-            setGetElection(res.data);
-
-            // Check if user has already voted in this election
-            const userID = JSON.parse(localStorage.getItem("User"))._id;
-            const ongoingElection = res.data.find((item) => item.status === 'ongoing');
-            
-            if (ongoingElection) {
-                axios.get(`http://localhost:7000/api/votes/check`, {
-                    params: { electionID: ongoingElection._id, userID }
-                })
-                .then((response) => {
-                    setHasVoted(response.data.hasVoted);
-                })
-                .catch((err) => console.error("Error checking vote status:", err));
-            }
-        })
-        .catch((err) => {
-            alert(err);
-        });
-    }, []);
+            .then((res) => {
+                setGetElection(res.data);
+    
+                const ongoingElection = res.data.find((item) => item.status === 'ongoing');
+                if (ongoingElection && account) {
+                    axios.get(`http://localhost:7000/api/votes/check`, {
+                        params: { electionID: ongoingElection._id, account }
+                    })
+                    .then((response) => {
+                        setHasVoted(response.data.hasVoted);
+                    })
+                    .catch((err) => console.error("Error checking vote status:", err));
+                }
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    }, [account]);    
 
     useEffect(()=>{
         axios.get('http://localhost:7000/api/result/view')
         .then((res)=>{
-            console.log(res.data)
+            // console.log(res.data)
             setGetResult(res.data)
         })
         .catch((err)=>{
@@ -109,32 +115,72 @@ export default function Vote() {
     },[])
 
     const filteredElection = getElection.find((item) => item.status === 'ongoing');
-    console.log(filteredElection, 'filtered election');
+    // console.log(filteredElection, 'filtered election');
 
     const userID = JSON.parse(localStorage.getItem("User"))
-    console.log(userID._id,"userID")
+    // console.log(userID._id,"userID")
 
     const filteredResult=getResult.filter(result=>result.status === 'display')
-    console.log(filteredResult,'filteredResult')
+    // console.log(filteredResult,'filteredResult')
 
     const handlechange = (e) => {
         setFeed({ ...feed, [e.target.name]: e.target.value });
     };
-    console.log(feed, "feed");
+    // console.log(feed, "feed");
     
     
-    const HandleVoteSubmit=(row)=>{  //row is the parameter passed(candidateID)
-        const candidateID=row._id
-        // console.log(candidateID,'cid')
-        axios.post('http://localhost:7000/api/votes/insert',{electionID:filteredElection._id,candidateID:candidateID,userID:userID})
-        .then((res)=>{
-            console.log(res.data)
-        })
-        .catch((err)=>{
-            alert(err)
-        })
-    }
+    const HandleVoteSubmit = async (row) => {  
+        if (!contract || !account) {
+            console.error("Contract instance or account is missing.");
+            return;
+        }
+        
+        const candidateID = row._id;
+        
+        try {
+            console.log("Attempting to cast vote...");
+            await contract.methods.castVote(parseInt(filteredElection._id,16), parseInt(candidateID,16)).send({ from: account });
+            console.log("Vote successfully cast");
+    
+            // Now update the database with the vote information
+            axios.post('http://localhost:7000/api/votes/insert', { electionID: filteredElection._id, candidateID: candidateID, account: account })
+                .then((res) => {
+                    console.log("Vote recorded in the database:", res.data);
+                })
+                .catch((err) => {
+                    console.error("Error recording vote in the database:", err);
+                });
+        } catch (error) {
+            console.error("Error casting vote through the contract:", error);
+        }
+    };
+    
+    
 
+    useEffect(() => {
+        const fetchVoteCounts = async () => {
+            if (!contract || !getElection.length) return;
+
+            const ongoingElection = getElection.find((item) => item.status === 'ongoing');
+            if (!ongoingElection) return;
+
+            const counts = {};
+            for (let candidate of ongoingElection.candidate_id) {
+                try {
+                    const count = await contract.methods.getCandidateVoteCount(parseInt(ongoingElection._id,16), parseInt(candidate._id,16)).call();
+                    counts[candidate._id] = count;
+                } catch (error) {
+                    console.error(`Error fetching vote count for candidate ${candidate._id}:`, error);
+                }
+            }
+            setVoteCounts(counts); // Store all counts in state
+        };
+
+        fetchVoteCounts();
+    }, [contract, getElection]);
+    
+
+    //for feedback
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -146,10 +192,6 @@ export default function Vote() {
                 alert(err);
             });
     };
-
-    // if (!isWeb3Ready) {
-    //     return <div>Loading Web3, accounts, and contract...</div>;
-    // }
 
     if (!isWeb3Ready) {
         return (
@@ -218,7 +260,9 @@ export default function Vote() {
                             {filteredElection?.candidate_id?.map((candidate, index) => (
                                 <div key={candidate._id} className="bg-white p-6 rounded-lg shadow-lg text-center">
                                     <h3 className="text-xl font-semibold text-gray-900">{candidate?.user_id?.userName}</h3>
-                                    <p className={`text-5xl font-bold ${candidateColors[index % candidateColors.length]}`}>{candidate.votes || 0}</p>
+                                    <p className={`text-5xl font-bold ${candidateColors[index % candidateColors.length]}`}>
+                                        {voteCounts[candidate._id] || 0}
+                                    </p>
                                 </div>
                             ))}
                         </div>

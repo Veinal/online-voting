@@ -14,7 +14,7 @@ export const initializeWeb3 = async () => {
     web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
   }
 
-  const contractAddress = "0xA1025259B009D2fFB61Fa886b730ceBB5CC149Ad";
+  const contractAddress = "0xb8290418c6DbD6d185493D581F7b1cA7dAEa37C7";
   const contractABI = VoteCastingArtifact.abi; 
   voteCasting = new web3.eth.Contract(contractABI, contractAddress);
 
