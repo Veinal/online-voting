@@ -2,8 +2,8 @@ const VotesSchema = require('../model/VotesSchema');
 
 const Insert=async(req,res)=>{
     try{
-        const {electionID,candidateID,userID,date,status}=req.body;
-        const data=await new VotesSchema({election_id:electionID,candidate_id:candidateID,user_id:userID,date,status})
+        const {electionID,candidateID,account,date,status}=req.body;
+        const data=await new VotesSchema({election_id:electionID,candidate_id:candidateID,account,date,status})
         const savedData= await data.save()
         console.log("Insertion success")
         res.send({"Insertion success":true,savedData})
@@ -26,10 +26,10 @@ const View=async(req,res)=>{
 }
 
 const Check=async(req,res)=>{
-    const { electionID, userID } = req.query;
+    const { electionID, account } = req.query;
     try {
         // Check if there's a vote for this user and election
-        const hasVoted = await VotesSchema.exists({ election_id: electionID, user_id: userID });
+        const hasVoted = await VotesSchema.exists({ election_id: electionID, account: account });
         res.json({ hasVoted: !!hasVoted }); // Returns true if vote exists, false otherwise
     } catch (error) {
         console.error("Error checking vote status", error);
@@ -73,12 +73,12 @@ const Delete=async(req,res)=>{
 }
 
 const Update=async(req,res)=>{
-    const {election_id,candidate_id,user_id,date,status}=req.body
+    const {election_id,candidate_id,account,date,status}=req.body
     try{
         const newData={}
         if(election_id){newData.election_id=election_id}
         if(candidate_id){newData.candidate_id=candidate_id}
-        if(user_id){newData.user_id=user_id}
+        if(account){newData.account=account}
         if(date){newData.date=date}
         if(status){newData.status=status}
 
