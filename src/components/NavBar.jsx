@@ -7,12 +7,16 @@ export default function NavBar() {
     const location =useLocation();
     const path=location.pathname;
     const [userDetails,setUserDetails]=useState()
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     
     useEffect(()=>{
         const user=JSON.parse(localStorage.getItem("User"))
         setUserDetails(user)
     },[])
-    // console.log(userDetails,'ud')
+
+    const handleLogout=()=>{
+
+    }
 
   return (
     <div>
@@ -78,8 +82,48 @@ export default function NavBar() {
         </div>
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <p className='text-white font-semibold'>
-                Hi, {userDetails?.userName}
+                {userDetails?.userName ? `Hi, ${userDetails?.userName}` : " "}
             </p>
+            <button 
+                id="logout" 
+                className="rounded-full flex items-center" 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+                <img 
+                    src={logo} 
+                    className="rounded-full ml-2 h-10" 
+                    alt="profile" 
+                />
+            </button>
+            
+            {isDropdownOpen && (
+                <div 
+                    className="absolute top-full mt-2 right-0 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+                >
+                    {/* <a 
+                        href="#" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={handleProfileClick}
+                    >
+                        Your Profile
+                    </a>
+                    <a 
+                        href="#" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={handleSettingsClick}
+                    >
+                        Settings
+                    </a> */}
+                    <a 
+                        href="#" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </a>
+                </div>
+            )}
+
             {/* <button type="button" className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="absolute -inset-1.5"></span>
             <span className="sr-only">View notifications</span>

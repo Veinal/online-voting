@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import FeedbackViewModal from './FeedbackViewModal';
 import Tooltip from '@mui/material/Tooltip';
+import { useNavigate } from 'react-router-dom';
 
 // view modal
 const style2 = {
@@ -46,6 +47,13 @@ export default function FeedbackDetails() {
     const [getFeed,setGetFeed]=useState()
     const [selectedFeed,setSelectedFeed]=useState('')
     const [count,setCount]=useState(0)
+    const navigate=useNavigate()
+
+    const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    if(!adminAvail){
+        navigate('/adminlogin')
+    }
 
     //view modal states
     const [open2, setOpen2] = React.useState(false);

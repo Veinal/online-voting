@@ -8,9 +8,22 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function SideBar() {
+    const navigate=useNavigate()
+    // const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    // if(!adminAvail){
+    //     navigate('/adminlogin')
+    // }
+
+    const HandleLogout=()=>{
+        localStorage.removeItem("Admin")
+        localStorage.removeItem("AdminToken")
+    }
+
   return (
     <div> 
         
@@ -67,14 +80,8 @@ export default function SideBar() {
                     </Link>
                 </li>
                 <hr />
-                {/* <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <LoginIcon/>
-                    <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
-                    </Link>
-                </li> */}
                 <li>
-                    <Link to=''  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <Link to='' onClick={HandleLogout}  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <LogoutIcon/>
                     <span className="flex-1 ms-3 whitespace-nowrap">Log Out</span>
                     </Link>

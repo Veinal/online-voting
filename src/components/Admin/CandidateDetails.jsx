@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import CandidateViewModal from './CandidateViewModal';
 import Tooltip from '@mui/material/Tooltip';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
     position: 'absolute',
@@ -75,6 +76,14 @@ export default function CandidateDetails() {
     const [selectedCand,setSelectedCand]=useState('')
     const [count,setCount]=useState(0)
     const [status,setStatus]=useState('')
+
+    const navigate=useNavigate()
+
+    const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    if(!adminAvail){
+        navigate('/adminlogin')
+    }
 
     //modal states for creating election
     const [open, setOpen] = React.useState(false);
