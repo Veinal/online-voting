@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ResultViewModal from './ResultViewModal';
+import { useNavigate } from 'react-router-dom';
 
 // view modal
 const style2 = {
@@ -59,6 +60,14 @@ export default function ResultDetails() {
     const [selectedResult,setSelectedResult]=useState('')
     const [count,setCount]=useState(0)
     const [status,setStatus]=useState('')
+
+    const navigate=useNavigate()
+
+    const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    if(!adminAvail){
+        navigate('/adminlogin')
+    }
 
     //view modal states
     const [open2, setOpen2] = React.useState(false);

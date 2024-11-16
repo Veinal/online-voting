@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Tooltip from '@mui/material/Tooltip';
 import UserViewModal from './UserViewModal';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -72,6 +73,14 @@ export default function UserDetails() {
     const [getUser,setGetUSer]=useState([]) 
     const [selectedUser,setSelectedUser]=useState('')
     const [count,setCount]=useState(0)
+
+    const navigate=useNavigate()
+
+    const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    if(!adminAvail){
+        navigate('/adminlogin')
+    }
 
     //view modal states
     const [open2, setOpen2] = React.useState(false);

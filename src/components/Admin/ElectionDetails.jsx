@@ -106,6 +106,12 @@ export default function ElectionDetails() {
 
     const [count,setCount]=useState(0)
 
+    const adminAvail=JSON.parse(localStorage.getItem("Admin"))
+
+    if(!adminAvail){
+        navigate('/adminlogin')
+    }
+
     //modal states for creating election
     const [open, setOpen] = React.useState(false);
     const handleOpen = () =>  setOpen(true);

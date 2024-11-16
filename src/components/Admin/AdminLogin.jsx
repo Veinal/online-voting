@@ -17,11 +17,21 @@ export default function AdminLogin() {
 
         axios.post('http://localhost:7000/api/adminreg/login',login)
         .then((res)=>{
-            console.log(res.data)
+            if(res.data.success===true){
+                console.log("login successful")
+                console.log(res.data)
+                const adminAuth=res.data.admintoken
+                localStorage.setItem("AdminToken",JSON.stringify(adminAuth))
+                localStorage.setItem("Admin",JSON.stringify(res.data.admin))
+                navigate('/admindashboard')
+            }
+            else{
+                console.log(res.data.error)
+                alert("Invalid email or password!!!")
+            }
         })
         .catch((err)=>{
-            console.log(err)
-            navigate('/admindashboard')
+            alert(err)
         })
     }
   return (
