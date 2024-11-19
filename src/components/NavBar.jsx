@@ -3,19 +3,27 @@ import { Link,useLocation } from 'react-router-dom'
 import logo from '../voteHub_logo.jpeg'
 import { useState } from 'react';
 
-export default function NavBar() {
+export default function NavBar(props) {
     const location =useLocation();
     const path=location.pathname;
     const [userDetails,setUserDetails]=useState()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    // const [count,setCount]=useState(0)
     
     useEffect(()=>{
         const user=JSON.parse(localStorage.getItem("User"))
         setUserDetails(user)
-    },[])
+    },[props.logoutCount])
 
-    const handleLogout=()=>{
+    const handleLogout=(e)=>{
+        e.preventDefault();
 
+        localStorage.removeItem("User")
+        localStorage.removeItem("UserToken")
+        props.setLogoutCount((prev)=>!prev)
+        setIsDropdownOpen(!isDropdownOpen)
+
+        console.log("User logged out successfully...")
     }
 
   return (
@@ -53,14 +61,16 @@ export default function NavBar() {
                 >
                 Home
                 </Link>
-                <Link
-                to="/vote"
-                className={`rounded-md px-3 py-2 text-sm font-medium ${
-                    path === '/vote' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                }`}
-                >
-                Voting
-                </Link>
+                {userDetails && 
+                    <Link
+                    to="/vote"
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                        path === '/vote' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    }`}
+                    >
+                    Voting
+                    </Link>
+                }
                 <Link
                 to="/contactus"
                 className={`rounded-md px-3 py-2 text-sm font-medium ${
@@ -69,6 +79,7 @@ export default function NavBar() {
                 >
                 Contact Us
                 </Link>
+
                 <Link
                 to="/aboutus"
                 className={`rounded-md px-3 py-2 text-sm font-medium ${
@@ -84,7 +95,8 @@ export default function NavBar() {
             <p className='text-white font-semibold'>
                 {userDetails?.userName ? `Hi, ${userDetails?.userName}` : " "}
             </p>
-            <button 
+            {userDetails &&
+                <button 
                 id="logout" 
                 className="rounded-full flex items-center" 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -95,6 +107,7 @@ export default function NavBar() {
                     alt="profile" 
                 />
             </button>
+            }
             
             {isDropdownOpen && (
                 <div 
