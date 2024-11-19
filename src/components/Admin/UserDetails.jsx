@@ -29,50 +29,51 @@ const style = {
   p: 4,
 };
   
-  // view modal
-  const style2 = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    // p: 2,
-  };
-  
-  // edit modal
-  // const style3 = {
-  //   position: 'absolute',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, -50%)',
-  //   width: 400,
-  //   bgcolor: 'background.paper',
-  //   border: '2px solid #000',
-  //   boxShadow: 24,
-  //   p: 4,
-  // };
-  
-  // delete modal
-  const style4 = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width:600,
-    height:150,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 2,
-  };
+// view modal
+const style2 = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  // p: 2,
+};
+
+// edit modal
+// const style3 = {
+//   position: 'absolute',
+//   top: '50%',
+//   left: '50%',
+//   transform: 'translate(-50%, -50%)',
+//   width: 400,
+//   bgcolor: 'background.paper',
+//   border: '2px solid #000',
+//   boxShadow: 24,
+//   p: 4,
+// };
+
+// delete modal
+const style4 = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width:600,
+  height:150,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 2,
+};
 
 export default function UserDetails() {
     const [getUser,setGetUSer]=useState([]) 
     const [selectedUser,setSelectedUser]=useState('')
     const [count,setCount]=useState(0)
+    const [searchQuery, setSearchQuery] = useState('')
 
     const navigate=useNavigate()
 
@@ -118,6 +119,11 @@ export default function UserDetails() {
         })
     },[count])
 
+    const filteredUsers = getUser.filter((user) =>
+      user.userName.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase().trim())
+    );
+
     const HandleDelete=async()=>{
       axios.delete(`http://localhost:7000/api/userreg/delete/${selectedUser._id}`)
       .then((res)=>{
@@ -152,7 +158,7 @@ export default function UserDetails() {
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </div>
-                    <input type="text" id="table-search-users" className="block py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users"/>
+                    <input value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} type="text" id="table-search-users" className="block py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users"/>
                 </div>
             </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -182,7 +188,7 @@ export default function UserDetails() {
                     </tr>
                 </thead>
                 <tbody>
-                    {getUser?.map((row)=>(
+                    {filteredUsers?.map((row)=>(
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-4">
                             <div className="flex items-center">

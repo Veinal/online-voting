@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VotingImg from '../votingImg.svg'
 import phone_sec from '../phone_sec.jpg'
 import Footer from './Footer'
 import {Link} from 'react-router-dom'
 
-export default function Home() {
+export default function Home(props) {
 
-    const user=JSON.parse(localStorage.getItem("UserToken"))
+    const [user,setUser]=useState('')
+
+    useEffect(()=>{
+        let user1=JSON.parse(localStorage.getItem("UserToken"))
+        setUser(user1)
+        console.log(user1,'user1')
+    },[props.logoutCount])
+    
     console.log(user,'user')
 
   return (

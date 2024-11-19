@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './Home'
 import NavBar from './NavBar'
@@ -23,9 +23,11 @@ import ElectionEditModal from './Admin/ElectionEditModal'
 
 export default function Router() {
 
+  const [logoutCount,setLogoutCount]=useState(false)
+
   const WithNavBar = ({ children }) => (
     <>
-      <NavBar />
+      <NavBar logoutCount={logoutCount} setLogoutCount={setLogoutCount}/>
       {children}
     </>
   );
@@ -41,7 +43,7 @@ export default function Router() {
     <div>
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<WithNavBar><Home/></WithNavBar>}/>
+                <Route path='/' element={<WithNavBar><Home logoutCount={logoutCount}/></WithNavBar>}/>
                 <Route path='/vote' element={<WithNavBar><Vote/></WithNavBar>}/>
                 <Route path='/contactus' element={<WithNavBar><ContactUs/></WithNavBar>}/>
                 <Route path='/aboutus' element={<WithNavBar><AboutUs/></WithNavBar>}/>
