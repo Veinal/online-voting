@@ -46,10 +46,23 @@ export default function Sign() {
   }
   console.log(signUpState,'signState')
 
+  const HandleImage=(e)=>{
+    setSignState({...signUpState,[e.target.name]:e.target.files[0]})
+  }
+
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    const Data=new FormData();
+    Data.append("userName",signUpState.userName)
+    Data.append("email",signUpState.email)
+    Data.append("password",signUpState.password)
+    Data.append("phone",signUpState.phone)
+    Data.append("age",signUpState.age)
+    Data.append("picture",signUpState.picture)
+    Data.append("role",signUpState.role)
     
-    Axios.post('http://localhost:7000/api/userreg/register',signUpState)
+    Axios.post('http://localhost:7000/api/userreg/register',Data)
     .then((res)=>{
       console.log(res.data)
       navigate('/signin')
@@ -155,7 +168,7 @@ export default function Sign() {
                 label="Picture"
                 name="picture"
                 autoComplete="picture"
-                onChange={(e)=>HandleChange(e)}
+                onChange={(e)=>HandleImage(e)}
               />
               
               <Select

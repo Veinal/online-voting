@@ -14,7 +14,7 @@ export default function UserViewModal(props) {
       <Box className="bg-white p-6 rounded-lg ">
           {/* Uncomment the below line to display the profile picture */}
           <div className='flex justify-center items-center'>
-            <img src={props?.selectedUser?.profilePic} alt="Profile" className="w-24 h-24 rounded-full mb-4" />
+            <img src={`http://localhost:7000/uploads/users/${props?.selectedUser?.picture}`} alt="Profile" className="w-32 h-32 rounded-full mb-4" />
           </div>
           
           <Typography id="user-name" variant="h6" component="h2" className="text-xl font-semibold mb-4">

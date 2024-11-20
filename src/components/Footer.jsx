@@ -1,4 +1,5 @@
 import React from 'react'
+import logo from '../voteHub_logo.jpeg'
 
 export default function Footer() {
   return (
@@ -8,8 +9,8 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
             <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-8">
-                <img className="h-20" src="https://aaah0mnbncqtinas.public.blob.vercel-storage.com/FX5ATkass4-no-background-VmcZHSX7xE4ng29ATNphGUdb388fxH.png" alt="Company name"/>
-                <p className="text-sm leading-6 text-gray-600">Making football look better to the world and a more respecful game.</p>
+                <img className="h-20 rounded-full" src={logo} alt="Company name"/>
+                <p className="text-sm leading-6 text-gray-600">Simple, Secure and Authentic Online Voting Process.</p>
                 <div className="flex space-x-6">
                 <a href="#" className="text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Facebook</span>
@@ -120,7 +121,7 @@ export default function Footer() {
             </div>
             </div>
             <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-            <p className="text-xs leading-5 text-gray-500">&copy; 2020 Your Company, Inc. All rights reserved.</p>
+            {/* <p className="text-xs leading-5 text-gray-500">&copy; 2020 Your Company, Inc. All rights reserved.</p> */}
             </div>
         </div>
         </footer>

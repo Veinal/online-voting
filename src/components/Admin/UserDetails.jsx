@@ -134,7 +134,7 @@ export default function UserDetails() {
     }
 
   return (
-    <div className='bg-gray-900 h-screen'>
+    <div className='bg-gray-900 min-h-screen'>
       <div className="p-4 sm:ml-64">
         <h1 className="font-bold text-2xl mt-3 text-white">USER DETAILS:</h1>
         {/* <hr /> */}
@@ -198,7 +198,7 @@ export default function UserDetails() {
                             </div>
                         </td>
                         <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <img className="w-10 h-10 rounded-full" src={row.picture} alt="userPicture"/>
+                            <img className="w-10 h-10 rounded-full" src={`http://localhost:7000/uploads/users/${row?.picture}`} alt="userPicture"/>
                             <div className="ps-3">
                                 <div className="text-base font-semibold">{row.userName}</div>
                                 <div className="font-normal text-gray-500">{row.email}</div>
