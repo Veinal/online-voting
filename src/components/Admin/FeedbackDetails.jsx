@@ -85,8 +85,9 @@ export default function FeedbackDetails() {
         })
     },[count])
 
-    const filteredFeed = getFeed.filter((feed) =>
-      feed.feedback.toLowerCase().includes(searchQuery.toLowerCase().trim())
+    const filteredFeed = getFeed.filter((feedback) =>
+      feedback?.feedback.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
+      feedback?.user_id?.userName.toLowerCase().includes(searchQuery.toLowerCase().trim())
     );
 
     const HandleDelete=()=>{
@@ -179,16 +180,17 @@ export default function FeedbackDetails() {
                       <th scope="col" className="px-6 py-3">
                           ROLE
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      {/* <th scope="col" className="px-6 py-3">
                           STATUS
-                      </th>
+                      </th> */}
                       <th scope="col" className="px-6 py-3">
                           Action
                       </th>
                   </tr>
               </thead>
               <tbody>
-                {filteredFeed?.map((row)=>(
+                {filteredFeed.length>0 ? (
+                  filteredFeed?.map((row)=>(
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                           <div className="flex items-center">
@@ -200,14 +202,14 @@ export default function FeedbackDetails() {
                           {row?.feedback}
                       </th>
                       <td className="px-6 py-4">
-                          {row?.user_id}
+                          {row?.user_id?.userName}
                       </td>
                       <td className="px-6 py-4">
                           {row?.user_id?.role}
                       </td>
-                      <td className="px-6 py-4">
+                      {/* <td className="px-6 py-4">
                           {row?.status}
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4">
                             {/* <IconButton IconButton aria-label="edit" color='inherit'>
                                 <EditIcon />
@@ -224,14 +226,21 @@ export default function FeedbackDetails() {
                             </Tooltip>
                       </td>
                   </tr>
-                ))}
+                ))
+              ):(
+                <tr>
+                  <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                    No data found
+                  </td>
+                </tr>
+              )}
               </tbody>
           </table>
       </div>
 
       {/* PAGINATION CODE: */}
 
-      <div className='mt-5 '>
+      {/* <div className='mt-5 '>
         <nav aria-label="Page navigation example">
           <ul className="inline-flex -space-x-px text-base h-10">
             <li>
@@ -257,7 +266,7 @@ export default function FeedbackDetails() {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       </div>
 

@@ -11,7 +11,7 @@ export default function UserViewModal(props) {
 
   return (
     <div>
-      <Box className="bg-white p-6 rounded-lg shadow-lg">
+      <Box className="bg-white p-6 rounded-lg ">
           {/* Uncomment the below line to display the profile picture */}
           <div className='flex justify-center items-center'>
             <img src={props?.selectedUser?.profilePic} alt="Profile" className="w-24 h-24 rounded-full mb-4" />
@@ -28,9 +28,11 @@ export default function UserViewModal(props) {
             <p><strong>Role:</strong> {props?.selectedUser?.role}</p>
           </Typography>
           
-          <Button onClick={props.handleClose2} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Close
-          </Button>
+          <div className='mt-8 flex justify-center'>
+            <Button onClick={props.handleClose2} variant='contained' color="primary" className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Close
+            </Button>
+          </div>
         </Box>
     </div>
   );

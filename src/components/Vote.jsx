@@ -16,6 +16,7 @@ export default function Vote() {
     const [getResult,setGetResult]=useState([])
     const [feed, setFeed] = useState({});
     const [hasVoted, setHasVoted] = useState(false);
+    const [user,setUser]=useState({})
 
     const [isWeb3Ready, setIsWeb3Ready] = useState(false);
     const [account, setAccount] = useState(null);
@@ -23,6 +24,10 @@ export default function Vote() {
     const [voteCounts, setVoteCounts] = useState({});
     const [web3, setWeb3] = useState(null);
 
+    useEffect(()=>{
+        setUser(JSON.parse(localStorage.getItem("User")))
+    },[])
+    // console.log(user._id,'user')
 
     useEffect(() => {
     const initialize = async () => {
@@ -184,9 +189,11 @@ export default function Vote() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:7000/api/feedback/insert', feed)
+        axios.post('http://localhost:7000/api/feedback/insert', {...feed,userID:user._id})
             .then((res) => {
                 console.log(res.data);
+                alert("feedback posted")
+                window.location.reload();
             })
             .catch((err) => {
                 alert(err);

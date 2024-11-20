@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 export default function CandidateViewModal(props) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+    <div className="bg-white p-6 rounded-lg max-w-lg mx-auto">
       {/* Heading Section */}
       <Typography 
         variant="h5" 
@@ -15,7 +15,7 @@ export default function CandidateViewModal(props) {
       </Typography>
 
       {/* Candidate Details Section */}
-      <div className="space-y-4">
+      <div className="space-y-4 mt-5">
         {/* Name Section */}
         <div className="flex justify-between items-center border-b pb-2">
           <Typography className="text-lg font-semibold text-gray-900">
@@ -42,7 +42,7 @@ export default function CandidateViewModal(props) {
             Role:
           </Typography>
           <Typography className="text-gray-600">
-            {props.selectedCand?.role || "No Role Assigned"}
+            {props.selectedCand?.user_id?.role || "No Role Assigned"}
           </Typography>
         </div>
 

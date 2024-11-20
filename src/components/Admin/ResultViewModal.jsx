@@ -9,7 +9,7 @@ export default function ResultViewModal(props) {
 
   return (
     <div>
-      <div className="bg-white p-4 rounded-lg shadow-lg overflow-auto">
+      <div className="bg-white p-4 rounded-lg overflow-auto">
         <h2 id="election-modal-title" className="text-2xl font-bold mb-4 text-center uppercase">
           {props.selectedResult?.election_id?.electionName}
         </h2>

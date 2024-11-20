@@ -2,7 +2,10 @@ const mongoose=require('mongoose');
 const {Schema}=mongoose
 
 const FeedbackSchema=new Schema({
-    // user_id:{},
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"UserDetails"
+    },
     feedback:{
         type:String
     },
