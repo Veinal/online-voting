@@ -279,7 +279,8 @@ export default function CandidateDetails() {
                   </tr>
               </thead>
               <tbody>
-                {filteredCand?.map((row)=>(
+                {filteredCand.length>0 ? (
+                  filteredCand?.map((row)=>(
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <td className="w-4 p-4">
                           <div className="flex items-center">
@@ -318,14 +319,21 @@ export default function CandidateDetails() {
                             </Tooltip>
                       </td>
                   </tr>
-                ))}
+                ))
+              ):(
+                <tr>
+                  <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                    No data found
+                  </td>
+                </tr>
+              )}
               </tbody>
           </table>
       </div>        
 
       {/* PAGINATION CODE: */}
 
-      <div className='mt-5 '>
+      {/* <div className='mt-5 '>
         <nav aria-label="Page navigation example">
           <ul className="inline-flex -space-x-px text-base h-10">
             <li>
@@ -351,7 +359,7 @@ export default function CandidateDetails() {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       </div>
 

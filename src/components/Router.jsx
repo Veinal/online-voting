@@ -12,7 +12,6 @@ import FeedbackDetails from './Admin/FeedbackDetails'
 import ResultDetails from './Admin/ResultDetails'
 import UserDetails from './Admin/UserDetails'
 import SideBar from './Admin/SideBar'
-import ContactUs from './ContactUs'
 import AboutUs from './AboutUs'
 import AdminLogin from './Admin/AdminLogin'
 import EditUserDetails from './Admin/EditUserDetails'
@@ -45,7 +44,6 @@ export default function Router() {
             <Routes>
                 <Route path='/' element={<WithNavBar><Home logoutCount={logoutCount}/></WithNavBar>}/>
                 <Route path='/vote' element={<WithNavBar><Vote/></WithNavBar>}/>
-                <Route path='/contactus' element={<WithNavBar><ContactUs/></WithNavBar>}/>
                 <Route path='/aboutus' element={<WithNavBar><AboutUs/></WithNavBar>}/>
 
                 <Route path='/signin' element={<SignIn/>}/>

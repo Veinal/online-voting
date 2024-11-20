@@ -39,7 +39,7 @@ const style2 = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  // p: 2,
+  p: 2,
 };
 
 // edit modal
@@ -188,8 +188,9 @@ export default function UserDetails() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredUsers?.map((row)=>(
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    {filteredUsers.length >0 ?
+                      (filteredUsers?.map((row)=>(
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-4">
                             <div className="flex items-center">
                                 <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -234,7 +235,15 @@ export default function UserDetails() {
                             </Tooltip>
                         </td>
                     </tr>
-                    ))}
+                    ))
+                  ):(
+                    <tr>
+                      <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                        No data found
+                      </td>
+                    </tr>
+                  )
+                  }
 
                 </tbody>
             </table>
@@ -243,7 +252,7 @@ export default function UserDetails() {
 
         {/* PAGINATION CODE: */}
 
-      <div className='mt-5 '>
+      {/* <div className='mt-5 '>
         <nav aria-label="Page navigation example">
           <ul className="inline-flex -space-x-px text-base h-10">
             <li>
@@ -269,7 +278,7 @@ export default function UserDetails() {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       </div>
 

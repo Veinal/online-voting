@@ -71,14 +71,14 @@ export default function NavBar(props) {
                     Voting
                     </Link>
                 }
-                <Link
+                {/* <Link
                 to="/contactus"
                 className={`rounded-md px-3 py-2 text-sm font-medium ${
                     path === '/contactus' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                 }`}
                 >
                 Contact Us
-                </Link>
+                </Link> */}
 
                 <Link
                 to="/aboutus"

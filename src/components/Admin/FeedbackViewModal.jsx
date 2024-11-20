@@ -8,7 +8,7 @@ export default function FeedbackViewModal(props) {
   
   return (
     <div>
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+      <div className="bg-white p-6 rounded-lg max-w-lg mx-auto">
       {/* Heading Section */}
       <Typography 
         variant="h5" 
@@ -36,7 +36,7 @@ export default function FeedbackViewModal(props) {
             User Name:
           </Typography>
           <Typography className="text-gray-600">
-            {props.selectedFeed?.user_id?.userName || "No Manifesto Provided"}
+            {props.selectedFeed?.user_id?.userName || "No User Found"}
           </Typography>
         </div>
 
@@ -46,7 +46,7 @@ export default function FeedbackViewModal(props) {
             Role:
           </Typography>
           <Typography className="text-gray-600">
-            {props.selectedFeed?.user_id?.role || "No Role Assigned"}
+            {props.selectedFeed?.user_id?.role || "No Role Found"}
           </Typography>
         </div>
 

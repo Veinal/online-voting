@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BarChart, Bar, PieChart, Pie, Tooltip, Legend, XAxis, YAxis, CartesianGrid,ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboard() {
 
@@ -70,8 +71,16 @@ export default function AdminDashboard() {
     })
   },[])
 
+  const data = [
+    { name: 'Users', count: getUser },
+    { name: 'Candidates', count: getCand },
+    { name: 'Elections', count: getElec },
+    { name: 'Results', count: getResult },
+    { name: 'Feedbacks', count: getFeed },
+  ];
+
   return (
-    <div className='flex bg-gray-900 h-screen'>
+    <div className='flex bg-gray-900 min-h-screen'>
       <div className="p-4 sm:ml-64 flex-1">
         <h1 className="text-white text-xl mb-5">Hello, {adminAvail?.adminName || ' '}</h1>
         <div className="flex flex-wrap justify-center items-center gap-5">
@@ -116,9 +125,21 @@ export default function AdminDashboard() {
             <p className="text-gray-600 text-lg font-semibold">Total: {getFeed}</p>
           </Paper>
         </div>
-        <div id="graph" className="mt-5">
-          {/* <div className="border rounded"></div> */}
+
+        <div id="graph" className="mt-8 flex flex-col items-center">
+          <h2 className="text-white text-xl font-semibold mb-4">Data Overview</h2>
+          <ResponsiveContainer width="60%" height={400}>
+            <BarChart data={data} className="bg-white rounded-lg shadow-lg p-5">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#4caf50" barSize={60} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
+
       </div>
     </div>
   );
