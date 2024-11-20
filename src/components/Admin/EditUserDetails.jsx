@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 export default function EditUserDetails() {
 
   const [user,setUser]=useState();
+  const [imgState,setImgState]=useState({picture:''})
   const params=useParams()
   const navigate=useNavigate()
   
@@ -28,10 +29,23 @@ export default function EditUserDetails() {
   }
   console.log(user,user)
 
+  const HandleFileChange=(e)=>{
+    setImgState({...imgState,[e.target.name]:e.target.files[0]})
+  }
+
   const HandleSubmit=async(e)=>{
     e.preventDefault();
 
-    axios.put(`http://localhost:7000/api/userreg/update/${userId}`,user)  //here the userId is the params id 
+    const Data=new FormData();
+    Data.append("userName",user.userName)
+    Data.append("email",user.email)
+    Data.append("password",user.password)
+    Data.append("phone",user.phone)
+    Data.append("age",user.age)
+    Data.append("picture",imgState.picture)
+    Data.append("role",user.role)
+
+    axios.put(`http://localhost:7000/api/userreg/update/${userId}`,Data)  //here the userId is the params id 
     .then((res)=>{
       console.log(res.data)
       navigate('/userdetails')
@@ -120,7 +134,7 @@ export default function EditUserDetails() {
                         type="file"
                         name='picture'
                         // value={user.picture}
-                        onChange={(e)=>HandleChange(e)}
+                        onChange={(e)=>HandleFileChange(e)}
                       />
                     </div>
                     <div className="space-y-2">

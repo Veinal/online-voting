@@ -14,6 +14,8 @@ app.use('/api/result',require('./router/ResultsRouter'))
 app.use('/api/userreg',require('./router/UserRouter'))
 app.use('/api/votes',require('./router/VotesRouter'))
 
+app.use('/uploads/users',express.static('./uploads/users'))
+
 const port=7000;
 app.listen(port,()=>{
     console.log("app is listening to port"+ port);

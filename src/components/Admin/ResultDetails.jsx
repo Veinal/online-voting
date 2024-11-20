@@ -204,7 +204,7 @@ export default function ResultDetails() {
                           {row?.winner}
                       </td>
                       <td className="px-6 py-4">
-                          {row?.election_id?.candidate_id?.totalVote}
+                          {row?.totalVotes}
                       </td>
                       <td className="px-6 py-4">
                           {row?.status}

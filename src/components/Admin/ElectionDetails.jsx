@@ -231,29 +231,39 @@ export default function ElectionDetails() {
       e.preventDefault();
   
       try {
+          // Insert into results collection
           const insertResponse = await axios.post('http://localhost:7000/api/result/insert', {
-              electionId: selectedElect._id
+              electionId: selectedElect._id,
           });
   
           if (!insertResponse.data.success) {
-              alert(insertResponse.data.message);  // Show the error message
-              return;  // Exit if the insertion failed
+              alert(insertResponse.data.message); // Show error message
+              return; // Exit if insertion fails
           }
   
-          // If insertion is successful, update the election status
+          // Calculate the result
+          const calculateResponse = await axios.post(`http://localhost:7000/api/election/calculateResult/${selectedElect._id}`);
+  
+          if (!calculateResponse.data.success) {
+              alert(calculateResponse.data.message); // Show error message
+              return; // Exit if calculation fails
+          }
+  
+          // Update the election status
           const updateResponse = await axios.put(`http://localhost:7000/api/election/update/${selectedElect._id}`, {
-              status: 'closed'
+              status: 'closed',
           });
   
-          console.log(updateResponse.data);
+          console.log('Election status updated:', updateResponse.data);
+  
+          // Close modal and refresh data
           handleClose5();
           setCount((prev) => !prev);
-          
       } catch (err) {
-          alert(err.response ? err.response.data.message : "An unexpected error occurred.");
+          console.error('Error in HandleResultSubmit:', err);
+          alert(err.response ? err.response.data.message : 'An unexpected error occurred.');
       }
-  };
-  
+  };  
   
 
   return (
@@ -377,33 +387,6 @@ export default function ElectionDetails() {
 
       {/* PAGINATION CODE: */}
 
-      {/* <div className='mt-5 '>
-        <nav aria-label="Page navigation example">
-          <ul className="inline-flex -space-x-px text-base h-10">
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-              <a href="#" aria-current="page" className="flex items-center justify-center px-4 h-10 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-            </li>
-            <li>
-              <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div> */}
 
       </div>
 

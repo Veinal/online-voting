@@ -22,6 +22,9 @@ export default function ResultViewModal(props) {
             <strong className="text-lg">Winner:</strong> <span className="text-gray-600">{props.selectedResult?.winner}</span>
           </p>
           <p className="text-gray-700 mb-2">
+            <strong className="text-lg">Total Votes:</strong> <span className="text-gray-600">{props.selectedResult?.totalVotes}</span>
+          </p>
+          <p className="text-gray-700 mb-2">
             <strong className="text-lg">Start Date:</strong> <span className="text-gray-600">{new Date(props.selectedResult?.election_id?.startDate).toLocaleDateString()}</span>
           </p>
           <p className="text-gray-700 mb-4">

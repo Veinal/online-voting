@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import VotingImg from '../votingImg.svg'
 import phone_sec from '../phone_sec.jpg'
+import auth from '../authenticate.jpeg'
+import castVote from '../cast-vote.jpg'
+import results from '../results.jpg'
 import Footer from './Footer'
 import {Link} from 'react-router-dom'
 
@@ -188,7 +191,7 @@ export default function Home(props) {
                 <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="bg-primary p-6 rounded-full">
-                    <img src="/path/to/your/authentication-icon.svg" alt="Authentication" className="w-12 h-12" />
+                    <img src={auth} alt="Authentication" className="w-40 h-36 rounded-xl" />
                     </div>
                     <h3 className="text-xl font-bold">1. Authenticate</h3>
                     <p className="text-muted-foreground">
@@ -198,7 +201,7 @@ export default function Home(props) {
                 
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="bg-primary p-6 rounded-full">
-                    <img src="/path/to/your/vote-icon.svg" alt="Vote" className="w-12 h-12" />
+                    <img src={castVote} alt="Vote" className="w-40 h-36 rounded-xl" />
                     </div>
                     <h3 className="text-xl font-bold">2. Cast Your Vote</h3>
                     <p className="text-muted-foreground">
@@ -208,7 +211,7 @@ export default function Home(props) {
 
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="bg-primary p-6 rounded-full">
-                    <img src="/path/to/your/results-icon.svg" alt="Results" className="w-12 h-12" />
+                    <img src={results} alt="Results" className="w-40 h-36 rounded-xl" />
                     </div>
                     <h3 className="text-xl font-bold">3. View Results</h3>
                     <p className="text-muted-foreground">

@@ -6,12 +6,12 @@ const JWT_SECRET="user"
 const Register = async(req,res)=>{
     try{
         const {userName,email,password,phone,age,role,date,status}=req.body;
-        // picture
+        const picture=req?.file?.filename;
 
         const salt=await bcrypt.genSalt(10)
         const secpass=await bcrypt.hash(password,salt)
 
-        const data = await new UserSchema({userName,email,password:secpass,phone,age,role,date,status})
+        const data = await new UserSchema({userName,email,password:secpass,phone,age,picture,role,date,status})
         const savedData=await data.save()
         console.log("User Registration successful")
         res.send({"Registration successful":true,savedData})
@@ -100,6 +100,8 @@ const Delete =async(req,res)=>{
 
 const Update=async(req,res)=>{
     const {userName,email,password,phone,age,role,date,status}=req.body
+    const picture=req?.file?.filename
+    
     try{
         const newData={}
         if(userName){newData.userName=userName}
@@ -107,6 +109,7 @@ const Update=async(req,res)=>{
         if(password){newData.password=password}
         if(phone){newData.phone=phone}
         if(age){newData.age=age}
+        if(picture){newData.picture=picture}
         if(role){newData.role=role}
         if(date){newData.date=date}
         if(status){newData.status=status}

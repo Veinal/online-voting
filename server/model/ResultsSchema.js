@@ -9,6 +9,9 @@ const ResultSchema=new Schema({
     winner:{
         type:String
     },
+    totalVotes:{
+        type:Number
+    },
     date:{
         type:Date,
         default:Date.now()
