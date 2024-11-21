@@ -107,6 +107,7 @@ export default function Vote() {
                 alert(err);
             });
     }, [account]);    
+    console.log(getElection,'ge')
 
     useEffect(()=>{
         axios.get('http://localhost:7000/api/result/view')
@@ -126,12 +127,17 @@ export default function Vote() {
     // console.log(userID._id,"userID")
 
     const filteredResult=getResult.filter(result=>result.status === 'display')
-    // console.log(filteredResult,'filteredResult')
+    console.log(filteredResult,'filteredResult')
 
     const handlechange = (e) => {
         setFeed({ ...feed, [e.target.name]: e.target.value });
     };
     // console.log(feed, "feed");
+
+    const MatchingElectionResult = getElection.filter(election =>
+        filteredResult.some(result => result.election_id._id === election._id)
+    );
+    console.log(MatchingElectionResult,'mch') 
     
     
     const HandleVoteSubmit = async (row) => {  
@@ -259,16 +265,45 @@ export default function Vote() {
                     </section>
                 )}
 
+                {/* Winner Section */}
+                {filteredResult.length > 0 && (
+                    <section className="flex justify-center items-center mt-12">
+                        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-8 rounded-lg shadow-lg text-center max-w-lg mx-auto">
+                            <h2 className="text-4xl font-extrabold mb-4">
+                                🎉 Congratulations! 🎉
+                            </h2>
+                            <p className="text-lg font-medium">
+                                The winner is:
+                            </p>
+                            <h3 className="mt-2 text-3xl font-bold">
+                                {filteredResult[0]?.winner || "Winner Name"}
+                            </h3>
+                            <p className="mt-4 text-xl">
+                                Total Votes: <span className="font-semibold">{filteredResult[0]?.totalVotes || 0}</span>
+                            </p>
+                            
+                        </div>
+                    </section>
+                )}
+
+
                 {/* Vote Tallies Section */}
                 {filteredResult.length > 0 && (
                     <section className="mt-12">
-                        <h2 className="text-3xl font-bold mb-6">Vote Tallies</h2>
+                        <h2 className="text-3xl font-bold mb-6 text-center">Election Results</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {filteredElection?.candidate_id?.map((candidate, index) => (
-                                <div key={candidate._id} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                                    <h3 className="text-xl font-semibold text-gray-900">{candidate?.user_id?.userName}</h3>
-                                    <p className={`text-5xl font-bold ${candidateColors[index % candidateColors.length]}`}>
-                                        {voteCounts[candidate._id] || 0}
+                            {MatchingElectionResult[0]?.candidate_id?.map((candidate, index) => (
+                                <div
+                                    key={candidate._id}
+                                    className="bg-white p-6 rounded-lg shadow-lg text-center"
+                                >
+                                    <h3 className="text-xl font-semibold text-gray-900">
+                                        {candidate?.user_id?.userName || "Unknown Candidate"}
+                                    </h3>
+                                    <p
+                                        className={`text-3xl p-3 mt-4 font-bold ${candidateColors[index % candidateColors.length]} text-black`}
+                                    >
+                                        {candidate?.voteCount || 0}
                                     </p>
                                 </div>
                             ))}

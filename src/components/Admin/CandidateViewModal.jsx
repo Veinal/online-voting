@@ -36,6 +36,16 @@ export default function CandidateViewModal(props) {
           </Typography>
         </div>
 
+        {/* vote count */}
+        <div className="flex justify-between items-center border-b pb-2">
+          <Typography className="text-lg font-semibold text-gray-900">
+            Vote Count:
+          </Typography>
+          <Typography className="text-gray-600">
+            {props.selectedCand?.voteCount}
+          </Typography>
+        </div>
+
         {/* Role Section */}
         <div className="flex justify-between items-center border-b pb-2">
           <Typography className="text-lg font-semibold text-gray-900">
