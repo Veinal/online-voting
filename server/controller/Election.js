@@ -112,7 +112,7 @@ const calculateElectionResult = async (req, res) => {
 
         // Fetch all votes for the given election
         const votes = await VotesSchema.aggregate([
-            { $match: { election_id: new mongoose.Types.ObjectId(id) } }, // Match by id
+            { $match: { election_id: new mongoose.Types.ObjectId(id) } }, // Match by election ID
             {
                 $group: {
                     _id: "$candidate_id", // Group votes by candidate
@@ -124,6 +124,22 @@ const calculateElectionResult = async (req, res) => {
 
         if (!votes || votes.length === 0) {
             return res.status(404).json({ error: "No votes found for this election" });
+        }
+
+        // Increment voteCount for each candidate
+        for (const voteData of votes) {
+            const { _id: candidateId, voteCount } = voteData;
+
+            const candidateUpdate = await CandidateSchema.findByIdAndUpdate(
+                candidateId,
+                { $set: { voteCount } }, // Update voteCount field
+                { new: true } // Return the updated document
+            );
+
+            if (!candidateUpdate) {
+                console.error(`Candidate with ID ${candidateId} not found.`);
+                return res.status(404).json({ error: `Candidate with ID ${candidateId} not found.` });
+            }
         }
 
         // Determine the winner
@@ -141,7 +157,7 @@ const calculateElectionResult = async (req, res) => {
         const resultUpdate = await ResultSchema.findOneAndUpdate(
             { election_id: id }, // Match result by election_id
             { $set: { winner: winnerName, totalVotes: totalVotes } },
-            { new: true } // Return the updated document
+            { new: true, upsert: true } // Create the document if it doesn't exist
         );
 
         if (!resultUpdate) {

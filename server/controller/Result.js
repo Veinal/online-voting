@@ -29,7 +29,15 @@ const Insert = async (req, res) => {
 
 const View = async (req, res) => {
     try {
-        const data = await ResultSchema.find().populate("election_id");
+        const data = await ResultSchema.find().populate({
+            path: "election_id",
+            populate: {
+                path: "candidate_id",
+                populate: {
+                    path: "user_id"
+                }
+            }
+        });
         // console.log(data,"view all candidates")
         res.json(data)
     }

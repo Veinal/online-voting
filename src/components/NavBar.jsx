@@ -20,6 +20,7 @@ export default function NavBar(props) {
 
         localStorage.removeItem("User")
         localStorage.removeItem("UserToken")
+        localStorage.removeItem("account")
         props.setLogoutCount((prev)=>!prev)
         setIsDropdownOpen(!isDropdownOpen)
 
