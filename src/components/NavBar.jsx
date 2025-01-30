@@ -103,7 +103,7 @@ export default function NavBar(props) {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
                 <img 
-                    src={logo} 
+                    src={`http://localhost:7000/uploads/users/${userDetails?.picture}`} 
                     className="rounded-full ml-2 h-10" 
                     alt="profile" 
                 />

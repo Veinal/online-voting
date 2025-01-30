@@ -303,7 +303,7 @@ export default function Vote() {
                                     <p
                                         className={`text-3xl p-3 mt-4 font-bold ${candidateColors[index % candidateColors.length]} text-black`}
                                     >
-                                        {candidate?.voteCount || 0}
+                                        <span className='text-black'>{candidate?.voteCount || 0}</span>
                                     </p>
                                 </div>
                             ))}
